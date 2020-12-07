@@ -141,6 +141,14 @@ function cek_unit($id){
    $data=App\Unit::where('objectabbr',$id)->first();
    return $data;
 }
+function get_sumber($id){
+   $data=App\Sumber::where('risikobisnis_id',$id)->get();
+   return $data;
+}
+function jum_sumber($id){
+   $data=App\Sumber::where('risikobisnis_id',$id)->count();
+   return $data;
+}
 function cek_sumber($id,$urut){
    $data=App\Sumber::where('risikobisnis_id',$id)->where('urut',$urut)->first();
    return $data;

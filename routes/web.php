@@ -92,6 +92,15 @@ Route::group(['middleware'    => 'auth'],function(){
 });
 
 Route::group(['middleware'    => 'auth'],function(){
+    Route::get('laporan_risiko', 'LaporanrisikoController@index');
+    Route::get('laporan_risiko/user', 'LaporanrisikoController@index_user');
+    Route::get('excel_laporan_risiko', 'LaporanrisikoController@laporan_risiko');
+    Route::get('laporan_risiko/verifikatur', 'LaporanrisikoController@index_verifikatur');
+    Route::get('laporan_risiko/view_data', 'LaporanrisikoController@view_data');
+    Route::get('laporan_risiko/view_data_verifikatur', 'LaporanrisikoController@view_data_verifikatur');
+});
+
+Route::group(['middleware'    => 'auth'],function(){
     Route::get('admin', 'AdminController@index');
     Route::get('admin/cari_nik', 'AdminController@cari_nik');
     Route::get('admin/cetak/{id}', 'AdminController@cetak');

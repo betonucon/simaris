@@ -64,6 +64,15 @@ class RisikobisnisController extends Controller
         $data       =Risikobisnis::find($id);
         $data->sts  =1;
         $data->save();
+
+        $cekalasan      = Alasan::where('risikobisnis_id',$id)->count();
+        if($cekalasan>0){
+            $alasan      = Alasan::where('risikobisnis_id',$id)->first();
+            $alasan->sts = 1;
+            $alasan->save();
+        }
+        
+       
     }
 
     public function ubah($id){
