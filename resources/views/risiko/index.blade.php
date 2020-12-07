@@ -230,27 +230,33 @@
     </div>
 </div>
 <div class="modal fade" id="modalubah" style="display: none;">
-    <div class="modal-dialog" style="margin-top: 0%;width:90%">
+    <div class="modal-dialog" style="margin-top: 0%;width:95%">
         <div class="modal-content">
             <div class="modal-header">
             <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                 <span aria-hidden="true">×</span></button>
             <h4 class="modal-title">Sumber Risiko</h4>
             </div>
-            <div class="modal-body" style="width:100%;height:550px;overflow-x:scroll">
-                <div id="notifikasiubah"></div>
-                <form method="post" id="myubah_data" enctype="multipart/form-data">
-                    @csrf
-                    
-                    <div id="tampilkanubah"></div>
+            <div class="modal-body" >
+                <div style="width:100%;display: flow-root;">
+                    <div id="notifikasiubah"></div>
+                    <form method="post" id="myubah_data" enctype="multipart/form-data">
+                        @csrf
                         
-                    
-                </form>
+                        <div id="tampilkanubah"></div>
+                        
+                            
+                        
+                    </form>
+                    <div class="col-sm-12" style="margin-top:2%">
+                        <button type="button" class="btn btn-default pull-left" data-dismiss="modal">Batal</button>
+                        <button type="button" class="btn btn-primary" style="margin-left:1%" onclick="ubah_data()">Simpan Data</button>
+                     </div>
+                </div>
+                <div id="tampilkanubah_data" style="width:100%;display: flow-root;"></div>
             </div>
-            <div class="modal-footer">
-                <button type="button" class="btn btn-default pull-left" data-dismiss="modal">Batal</button>
-                <button type="button" class="btn btn-primary" onclick="ubah_data()">Simpan Data</button>
-            </div>
+            
+            
         </div>
     </div>
 </div>
@@ -547,7 +553,9 @@
                url: "{{url('risiko/sumber')}}/"+a,
                data: "id=id",
                success: function(msg){
-                   $("#tampilkanubah").html(msg);
+                   data=msg.split('||');
+                   $("#tampilkanubah").html(data[0]);
+                   $("#tampilkanubah_data").html(data[1]);
                    $('#modalubah').modal({backdrop: 'static', keyboard: false});
                   
                }
@@ -594,6 +602,30 @@
                success: function(msg){
                    $("#tampilkanubah_sts").html(msg);
                    $('#modalubah_sts').modal({backdrop: 'static', keyboard: false});
+                  
+               }
+           });
+            
+        }
+        function hapus_sumber(no,id){
+           
+           $.ajax({
+               type: 'GET',
+               url: "{{url('risiko/hapus_sumber')}}?no="+no+"&id="+id,
+               data: "no="+no+"&id="+id,
+               success: function(msg){
+                        $.ajax({
+                            type: 'GET',
+                            url: "{{url('risiko/sumber')}}/"+msg,
+                            data: "id=id",
+                            success: function(det){
+                                has=det.split('||');
+                                $("#tampilkanubah").html(has[0]);
+                                $("#tampilkanubah_data").html(has[1]);
+                                $('#notifikasiubah').html('');
+                                
+                            }
+                        });
                   
                }
            });
@@ -677,9 +709,20 @@
                     cache: false,
                     processData:false,
                     success: function(msg){
-                        
-                        if(msg=='ok'){
-                            location.reload();
+                        data=msg.split('||');
+                        if(data[0]=='ok'){
+                            $.ajax({
+                                type: 'GET',
+                                url: "{{url('risiko/sumber')}}/"+data[1],
+                                data: "id=id",
+                                success: function(det){
+                                    has=det.split('||');
+                                    $("#tampilkanubah").html(has[0]);
+                                    $("#tampilkanubah_data").html(has[1]);
+                                    $('#notifikasiubah').html('');
+                                    
+                                }
+                            });
                         }else{
                             $('#notifikasiubah').html(msg);
                         }

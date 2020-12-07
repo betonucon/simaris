@@ -82,7 +82,7 @@ function peluang(){
 }
 
 function get_kpi($unit,$periode){
-   $data=App\Kpi::where('unit_id',$unit)->where('periode_id',$periode)->where('sts',0)->orderBy('kode','Asc')->get();
+   $data=App\Kpi::where('unit_id',$unit)->where('periode_id',$periode)->orderBy('kode','Asc')->get();
    return $data;
 }
 function get_alasan($unit,$periode,$role){

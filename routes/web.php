@@ -67,6 +67,7 @@ Route::group(['middleware'    => 'auth'],function(){
 Route::group(['middleware'    => 'auth'],function(){
     Route::get('risiko', 'RisikobisnisController@index');
     Route::get('risiko/pimpinanunit', 'RisikobisnisController@index_pimpinanunit');
+    Route::get('risiko/hapus_sumber', 'RisikobisnisController@hapus_sumber');
     Route::get('risiko/pimpinangcg', 'RisikobisnisController@index_pimpinangcg');
     Route::get('risiko/verifikatur', 'RisikobisnisController@index_verifikatur');
     Route::get('risiko/cari_unit', 'RisikobisnisController@cari_unit');
