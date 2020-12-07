@@ -148,10 +148,10 @@ function total_kpi_unit_palingutama($unit,$periode){
 }
 
 function cek_sumber_risiko($id){
-   $data=App\SUmber::where('risikobisnis_id',$id)->count();
+   $data=App\Sumber::where('risikobisnis_id',$id)->count();
    return $data;
 }
-
+//cek
 function unit(){
    $data=App\Unit::orderBy('nama','Desc')->get();
    return $data;
