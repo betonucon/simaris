@@ -123,7 +123,7 @@
 
                         <div class="form-group" id="tampil_unit">
                             <label>Unit Kerja</label>
-                            <select  name="unit_id"   class="form-control">
+                            <select  name="unit_id"  id="unit_id_1" class="form-control">
                                 <option value="">Pilih Unit</option>
                                 @foreach(unit() as $unit)
                                     <option value="{{$unit['objectabbr']}}">{{$unit['nama']}}</option>
@@ -132,7 +132,7 @@
                         </div>
                         <div class="form-group" id="tampil_unit_2">
                             <label>Unit Subdit</label>
-                            <select  name="unit_id"   class="form-control">
+                            <select  name="unit_id"  id="unit_id_2" class="form-control">
                                 <option value="">Pilih Unit</option>
                                 @foreach(unit_subdit() as $unit)
                                     <option value="{{$unit['objectabbr']}}">{{$unit['nama']}}</option>
@@ -240,6 +240,8 @@
                }
            });
             
+            $('#unit_id_1').prop("disabled", true);
+            $('#unit_id_2').prop("disabled", true);
             $('#tampil_unit').hide();
             $('#tampil_unit_2').hide();
 
@@ -282,12 +284,18 @@
            if(a==1 || a==3){
                 $('#tampil_unit').show();
                 $('#tampil_unit_2').hide();
+                $('#unit_id_1').prop("disabled", false);
+                $('#unit_id_2').prop("disabled", true);
            }else if(a==6){
                 $('#tampil_unit_2').show();
                 $('#tampil_unit').hide();
+                $('#unit_id_1').prop("disabled", true);
+                $('#unit_id_2').prop("disabled", false);
            }else{
                 $('#tampil_unit').hide();
                 $('#tampil_unit_2').hide();
+                $('#unit_id_1').prop("disabled", true);
+                $('#unit_id_2').prop("disabled", true);
            }
             
         }
