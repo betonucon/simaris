@@ -151,7 +151,7 @@ function cek_sumber_risiko($id){
    $data=App\Sumber::where('risikobisnis_id',$id)->count();
    return $data;
 }
-//cek
+//cekcccccc
 function unit(){
    $data=App\Unit::orderBy('nama','Desc')->get();
    return $data;
