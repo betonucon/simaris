@@ -110,13 +110,19 @@ Route::group(['middleware'    => 'auth'],function(){
 
 Route::group(['middleware'    => 'auth'],function(){
     Route::get('admin', 'AdminController@index');
+    Route::get('unit', 'AdminController@index_unit');
     Route::get('admin/cari_nik', 'AdminController@cari_nik');
     Route::get('admin/cetak/{id}', 'AdminController@cetak');
     Route::get('admin/ubah/{id}', 'AdminController@ubah');
+    Route::get('unit/ubah/{id}', 'AdminController@ubah_unit');
     Route::get('admin/hapus/{id}', 'AdminController@hapus');
+    Route::get('unit/hapus/{id}', 'AdminController@hapus_unit');
     Route::get('admin/view_data', 'AdminController@view_data');
+    Route::get('unit/view_data', 'AdminController@view_data_unit');
     Route::post('admin/simpan', 'AdminController@simpan');
+    Route::post('unit/simpan', 'AdminController@simpan_unit');
     Route::post('admin/ubah_data', 'AdminController@ubah_data');
+    Route::post('unit/ubah_data', 'AdminController@ubah_data_unit');
     Route::post('admin/import', 'AdminController@import_data');
 
 });
