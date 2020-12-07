@@ -66,12 +66,15 @@ Route::group(['middleware'    => 'auth'],function(){
 
 Route::group(['middleware'    => 'auth'],function(){
     Route::get('risiko', 'RisikobisnisController@index');
+    Route::get('risiko/pimpinanunit', 'RisikobisnisController@index_pimpinanunit');
+    Route::get('risiko/pimpinangcg', 'RisikobisnisController@index_pimpinangcg');
     Route::get('risiko/verifikatur', 'RisikobisnisController@index_verifikatur');
     Route::get('risiko/cari_unit', 'RisikobisnisController@cari_unit');
     Route::get('risiko/view_dampak', 'RisikobisnisController@view_dampak');
     Route::get('risiko/view_dampak_edit', 'RisikobisnisController@view_dampak_edit');
     Route::get('risiko/cetak/{id}', 'RisikobisnisController@cetak');
     Route::get('risiko/ubah/{id}', 'RisikobisnisController@ubah');
+    Route::get('risiko/ulasan/{id}', 'RisikobisnisController@ulasan');
     Route::get('risiko/ubah_sts/{id}', 'RisikobisnisController@ubah_sts');
     Route::get('risiko/sumber/{id}', 'RisikobisnisController@sumber');
     Route::get('risiko/sumber_verifikatur/{id}', 'RisikobisnisController@sumber_verifikatur');
@@ -81,6 +84,8 @@ Route::group(['middleware'    => 'auth'],function(){
     Route::get('risiko/hapus/{id}', 'RisikobisnisController@hapus');
     Route::get('risiko/view_data', 'RisikobisnisController@view_data');
     Route::get('risiko/view_data_verifikatur', 'RisikobisnisController@view_data_verifikatur');
+    Route::get('risiko/view_data_pimpinanunit', 'RisikobisnisController@view_data_pimpinanunit');
+    Route::get('risiko/view_data_pimpinangcg', 'RisikobisnisController@view_data_pimpinangcg');
     Route::post('risiko/simpan', 'RisikobisnisController@simpan');
     Route::post('risiko/ubah_data', 'RisikobisnisController@ubah_data');
     Route::post('risiko/ubah_data_risiko', 'RisikobisnisController@ubah_data_risiko');
@@ -94,10 +99,13 @@ Route::group(['middleware'    => 'auth'],function(){
 Route::group(['middleware'    => 'auth'],function(){
     Route::get('laporan_risiko', 'LaporanrisikoController@index');
     Route::get('laporan_risiko/user', 'LaporanrisikoController@index_user');
+    Route::get('laporan_risiko/pimpinansubdit', 'LaporanrisikoController@index_pimpinansubdit');
     Route::get('excel_laporan_risiko', 'LaporanrisikoController@laporan_risiko');
+    Route::get('excel_laporan_risiko_subdit', 'LaporanrisikoController@laporan_risiko_subdit');
     Route::get('laporan_risiko/verifikatur', 'LaporanrisikoController@index_verifikatur');
     Route::get('laporan_risiko/view_data', 'LaporanrisikoController@view_data');
     Route::get('laporan_risiko/view_data_verifikatur', 'LaporanrisikoController@view_data_verifikatur');
+    Route::get('laporan_risiko/view_data_pimpinansubdit', 'LaporanrisikoController@view_data_pimpinansubdit');
 });
 
 Route::group(['middleware'    => 'auth'],function(){

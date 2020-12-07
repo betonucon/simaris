@@ -130,6 +130,15 @@
                                 @endforeach
                             </select>
                         </div>
+                        <div class="form-group" id="tampil_unit_2">
+                            <label>Unit Subdit</label>
+                            <select  name="unit_id"   class="form-control">
+                                <option value="">Pilih Unit</option>
+                                @foreach(unit_subdit() as $unit)
+                                    <option value="{{$unit['objectabbr']}}">{{$unit['nama']}}</option>
+                                @endforeach
+                            </select>
+                        </div>
                         
                      
                     
@@ -232,6 +241,7 @@
            });
             
             $('#tampil_unit').hide();
+            $('#tampil_unit_2').hide();
 
         });
 
@@ -271,8 +281,13 @@
         function cek_role(a){
            if(a==1 || a==3){
                 $('#tampil_unit').show();
+                $('#tampil_unit_2').hide();
+           }else if(a==6){
+                $('#tampil_unit_2').show();
+                $('#tampil_unit').hide();
            }else{
                 $('#tampil_unit').hide();
+                $('#tampil_unit_2').hide();
            }
             
         }

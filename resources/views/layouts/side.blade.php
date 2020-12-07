@@ -44,6 +44,72 @@
              @endforeach
             </ul>
         </li>
+        <li class="treeview">
+            <a href="#">
+            <i class="fa fa-folder text-yellow"></i> <span>Risiko Bisnis Pimpinan</span>
+            <span class="pull-right-container">
+                <i class="fa fa-angle-left pull-right"></i>
+            </span>
+            </a>
+            <ul class="treeview-menu">
+             @foreach(unit_pimpinanunit() as $get_key)
+                <li><a href="{{url('risiko/pimpinanunit?unit='.$get_key['unit_id'])}}">&nbsp;<i class="fa fa-minus text-yellow"></i> {{substr(cek_unit($get_key['unit_id'])['nama'],0,25)}}</a></li>
+             @endforeach
+            </ul>
+        </li>
+        <li class="treeview">
+            <a href="#">
+            <i class="fa fa-folder text-yellow"></i> <span>Laporan Risiko Pimpinan</span>
+            <span class="pull-right-container">
+                <i class="fa fa-angle-left pull-right"></i>
+            </span>
+            </a>
+            <ul class="treeview-menu">
+             @foreach(unit_pimpinanunit() as $get_key)
+                <li><a href="{{url('laporan_risiko?unit='.$get_key['unit_id'])}}">&nbsp;<i class="fa fa-minus text-yellow"></i> {{substr(cek_unit($get_key['unit_id'])['nama'],0,25)}}</a></li>
+             @endforeach
+            </ul>
+        </li>
+    @endif
+    @if(pimpinangcg()>0)
+        
+        <li class="treeview">
+            <a href="#">
+            <i class="fa fa-folder text-yellow"></i> <span>Risiko Bisnis Pimpinan GCG</span>
+            <span class="pull-right-container">
+                <i class="fa fa-angle-left pull-right"></i>
+            </span>
+            </a>
+            <ul class="treeview-menu">
+            <li><a href="{{url('risiko/pimpinangcg')}}">&nbsp;<i class="fa fa-minus text-yellow"></i> Risiko Bisnis</a></li>
+            </ul>
+        </li>
+        <li class="treeview">
+            <a href="#">
+            <i class="fa fa-folder text-yellow"></i> <span>Laporan Risiko Pimpinan</span>
+            <span class="pull-right-container">
+                <i class="fa fa-angle-left pull-right"></i>
+            </span>
+            </a>
+            <ul class="treeview-menu">
+            <li><a href="{{url('laporan_risiko/user')}}">&nbsp;<i class="fa fa-minus text-yellow"></i> Laporan Risiko Bisnis</a></li>
+            </ul>
+        </li>
+    @endif
+    @if(pimpinansubdit()>0)
+        <li class="treeview">
+            <a href="#">
+            <i class="fa fa-folder text-yellow"></i> <span>Laporan Persubdit</span>
+            <span class="pull-right-container">
+                <i class="fa fa-angle-left pull-right"></i>
+            </span>
+            </a>
+            <ul class="treeview-menu">
+             @foreach(unit_pimpinansubdit() as $get_sub)
+                <li><a href="{{url('laporan_risiko/pimpinansubdit?unit='.$get_sub['unit_id'])}}">&nbsp;<i class="fa fa-minus text-yellow"></i> {{substr(cek_unit($get_sub['unit_id'])['nama'],0,25)}} </a></li>
+             @endforeach
+            </ul>
+        </li>
     @endif
 
     @if(keyperson()>0)

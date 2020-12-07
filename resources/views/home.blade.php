@@ -63,6 +63,12 @@
                                     <span class="description-text">{!!cek_role(managergcg())!!}</span>
                                 </div>
                             </div>
+                            <div class="col-sm-2 border-right">
+                                <div class="description-block">
+                                    <h5 class="description-header">PimpinanSubdit<br><br></h5>
+                                    <span class="description-text">{!!cek_role(pimpinansubdit())!!}</span>
+                                </div>
+                            </div>
                             
                         </div>
                     <!-- /.row -->

@@ -186,9 +186,9 @@
   <!-- /.content-wrapper -->
   <footer class="main-footer">
     <div class="pull-right hidden-xs">
-      <b>Version</b> 2.4.18
+      <b>Version</b> 1.0.0
     </div>
-    <strong>Copyright &copy; 20200-2021 <a href="{{url('/')}}">SD- DAARUL HUFFAZH</a>.</strong> All rights
+    <strong>Copyright &copy; 2020 <a href="{{url('/')}}">SIMARIS</a>.</strong> All rights
     reserved.
   </footer>
 

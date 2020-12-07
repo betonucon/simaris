@@ -108,45 +108,13 @@
 
 
 
-<div class="modal fade" id="modalubahkaidah" style="display: none;">
-    <div class="modal-dialog" style="margin-top: 0%;">
-        <div class="modal-content" style="display: flow-root;">
-            <div class="modal-header">
-            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                <span aria-hidden="true">×</span></button>
-            <h4 class="modal-title">Tentukan Kaidah</h4>
-            </div>
-            <div class="modal-body">
-                <div id="notifikasiubah_datakaidah"></div>
-                <form method="post" id="myubah_datakaidah" enctype="multipart/form-data">
-                    @csrf
-                    <input type="hidden" id="risikobisnis_id" name="risikobisnis_id">
-                    <select name="kaidah" class="form-control">
-                        <option value="">Pilih Kaidah</option>
-                        <option value="1">Sesuai Kaidah</option>
-                        <option value="2">Tidak Sesuai Kaidah</option>
-                    </select>
-                        
-                    
-                </form>
-            </div>
-            <div class="col-md-12">
-                <div class="modal-footer">
-                    <button type="button" class="btn btn-default pull-left" data-dismiss="modal">Batal</button>
-                    <button type="button" class="btn btn-primary" onclick="ubah_datakaidah()">Simpan Data</button>
-                </div>
-            </div>
-        </div>
-    </div>
-</div>
-
 <div class="modal fade" id="modalubahvalidasi" style="display: none;">
     <div class="modal-dialog" style="margin-top: 0%;">
         <div class="modal-content" style="display: flow-root;">
             <div class="modal-header">
             <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                 <span aria-hidden="true">×</span></button>
-            <h4 class="modal-title">Proses validasi</h4>
+            <h4 class="modal-title">Proses validasi PimpinanGCG</h4>
             </div>
             <div class="modal-body">
                 <div id="notifikasiubah_datavalidasi"></div>
@@ -155,8 +123,8 @@
                     <input type="hidden" id="risikobisnis_id_validasi"  name="risikobisnis_id">
                     <select name="sts" class="form-control" onchange="cek_validasi(this.value)">
                         <option value="">Pilih status validasi</option>
-                        <option value="2">Setujui</option>
-                        <option value="0">Kembalikan</option>
+                        <option value="4">Setujui</option>
+                        <option value="2">Kembalikan</option>
                     </select><br>
                     <div id="alasan">
                         <label>Alasan</label>
@@ -175,38 +143,7 @@
     </div>
 </div>
 
-<div class="modal fade" id="modalubahkelompok" style="display: none;">
-    <div class="modal-dialog" style="margin-top: 0%;">
-        <div class="modal-content" style="display: flow-root;">
-            <div class="modal-header">
-            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                <span aria-hidden="true">×</span></button>
-            <h4 class="modal-title">Tentukan kelompok</h4>
-            </div>
-            <div class="modal-body">
-                <div id="notifikasiubah_datakelompok"></div>
-                <form method="post" id="myubah_datakelompok" enctype="multipart/form-data">
-                    @csrf
-                    <input type="hidden" id="risikobisnis_id_kelompok" name="risikobisnis_id">
-                    <select name="kelompok_id" class="form-control">
-                        <option value="">Pilih kelompok</option>
-                        @foreach(kelompok() as $kel)
-                        <option value="{{$kel['id']}}">- {{$kel['name']}}</option>
-                        @endforeach
-                    </select>
-                        
-                    
-                </form>
-            </div>
-            <div class="col-md-12">
-                <div class="modal-footer">
-                    <button type="button" class="btn btn-default pull-left" data-dismiss="modal">Batal</button>
-                    <button type="button" class="btn btn-primary" onclick="ubah_datakelompok()">Simpan Data</button>
-                </div>
-            </div>
-        </div>
-    </div>
-</div>
+
 
 <div class="modal fade" id="modalulasan" style="display: none;">
     <div class="modal-dialog" style="margin-top: 5%;">
@@ -258,26 +195,7 @@
     </div>
 </div>
 
-<div class="modal fade" id="modalcetak" style="display: none;">
-    <div class="modal-dialog" style="margin-top: 5%;">
-        <div class="modal-content">
-            <div class="modal-header">
-            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                <span aria-hidden="true">×</span></button>
-            <h4 class="modal-title">Cetak</h4>
-            </div>
-            <div id="notifcetak"></div>
-            <div class="modal-body" id="printableArea" style="background:aqua;text-align:center">
-               
-            </div>
-            <div class="modal-footer">
-                <button type="button" class="btn btn-primary" onclick="printDiv('printableArea')">Cetak</button>
-                <button type="button" class="btn btn-default pull-left" onclick="kirim_email()">Kirim Email</button>
-                
-            </div>
-        </div>
-    </div>
-</div>
+
 
 <div class="modal modal-fullscreen fade" id="modalloading" >
     <div class="modal-dialog" style="margin-top: 15%;">
@@ -310,7 +228,7 @@
             $('#alasan').hide();
             $.ajax({
                type: 'GET',
-               url: "{{url('risiko/view_data_verifikatur')}}?unit="+unit+"&periode="+periode,
+               url: "{{url('risiko/view_data_pimpinangcg')}}?unit="+unit+"&periode="+periode,
                data: "id=id",
                beforeSend: function(){
                     $("#tampilkan").html('<center><img src="{{url(url_link().'/img/loading.gif')}}" width="3%"> Proses Data.............</center>');
@@ -334,7 +252,7 @@
             var unit=$('#unit_id').val();
            $.ajax({
                type: 'GET',
-               url: "{{url('risiko/view_data_verifikatur')}}?unit="+unit+"&periode="+a,
+               url: "{{url('risiko/view_data_pimpinangcg')}}?unit="+unit+"&periode="+a,
                data: "id=id",
                beforeSend: function(){
                     $("#tampilkan").html('<center><img src="{{url(url_link().'/img/loading.gif')}}" width="3%"> Proses Data.............</center>');
@@ -355,7 +273,7 @@
             
            $.ajax({
                type: 'GET',
-               url: "{{url('risiko/view_data_verifikatur')}}?unit="+a+"&periode="+periode,
+               url: "{{url('risiko/view_data_pimpinangcg')}}?unit="+a+"&periode="+periode,
                data: "id=id",
                beforeSend: function(){
                     $("#tampilkan").html('<center><img src="{{url(url_link().'/img/loading.gif')}}" width="3%"> Proses Data.............</center>');
@@ -453,7 +371,7 @@
 
         function cek_validasi(a){
            
-           if(a==0){
+           if(a==2){
                 $('#alasan').show();
            }else{
                 $('#alasan').hide();
@@ -551,7 +469,7 @@
             
                 $.ajax({
                     type: 'POST',
-                    url: "{{url('/risiko/ubah_validasi')}}?role_id=1",
+                    url: "{{url('/risiko/ubah_validasi')}}?role_id=3",
                     data: new FormData(form),
                     contentType: false,
                     cache: false,
@@ -562,7 +480,7 @@
                     success: function(msg){
                         data=msg.split('|');
                         if(data[0]=='ok'){
-                            window.location.assign("{{url('risiko/verifikatur')}}?unit="+data[1]);
+                            window.location.assign("{{url('risiko/pimpinangcg')}}?unit="+data[1]);
                                
                         }else{
                             $('#notifikasiubah_datavalidasi').html(msg);

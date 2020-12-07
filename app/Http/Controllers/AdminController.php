@@ -166,7 +166,7 @@ class AdminController extends Controller
             if($cek>0){
                 echo '<p style="padding:5px;background:#d1ffae"><b>Error</b>: <br />- Pengguna sudah memiliki akses dirole ini</p>';
             }else{
-                if($request->role_id==1 || $request->role_id==3){
+                if($request->role_id==1 || $request->role_id==3 || $request->role_id==6){
                     if($request->unit_id==''){
                         echo '<p style="padding:5px;background:#d1ffae"><b>Error</b>: <br />- Pilih Unit Kerja</p>';
                     }else{

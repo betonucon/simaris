@@ -85,8 +85,12 @@ function get_kpi($unit,$periode){
    $data=App\Kpi::where('unit_id',$unit)->where('periode_id',$periode)->where('sts',0)->orderBy('kode','Asc')->get();
    return $data;
 }
-function get_alasan($unit,$periode){
-   $data=App\Alasan::where('unit_id',$unit)->where('periode_id',$periode)->where('sts',0)->orderBy('id','Desc')->get();
+function get_alasan($unit,$periode,$role){
+   $data=App\Alasan::where('unit_id',$unit)->where('role_id',$role)->where('periode_id',$periode)->where('sts',0)->orderBy('id','Desc')->get();
+   return $data;
+}
+function jum_alasan($id,$role){
+   $data=App\Alasan::where('risikobisnis_id',$id)->where('role_id',$role)->where('sts',0)->count();
    return $data;
 }
 
@@ -123,6 +127,21 @@ function total_kpi_unit_proses($unit,$periode){
    return $data;
 }
 
+function total_kpi_unit_keypersson($unit,$periode){
+   $data=App\Risikobisnis::where('unit_id',$unit)->where('periode_id',$periode)->where('sts','>=',1)->count();
+   return $data;
+}
+
+function total_kpi_unit_verifikatur($unit,$periode){
+   $data=App\Risikobisnis::where('unit_id',$unit)->where('periode_id',$periode)->where('sts','>=',2)->count();
+   return $data;
+}
+
+function total_kpi_unit_pimpinan($unit,$periode){
+   $data=App\Risikobisnis::where('unit_id',$unit)->where('periode_id',$periode)->where('sts','>=',3)->count();
+   return $data;
+}
+
 function total_kpi_unit_palingutama($unit,$periode){
    $data=App\Kpi::where('unit_id',$unit)->where('periode_id',$periode)->where('level',2)->count();
    return $data;
@@ -135,6 +154,15 @@ function cek_sumber_risiko($id){
 
 function unit(){
    $data=App\Unit::orderBy('nama','Desc')->get();
+   return $data;
+}
+function unit_subdit(){
+   $data=App\Unit::where('sts_unit',1)->orderBy('nama','Desc')->get();
+   return $data;
+}
+function unit_bawahan_subdit($id){
+   $unit=substr($id,0,2);
+   $data=App\Unit::where('objectabbr','LIKE','%'.$unit.'%')->orderBy('objectabbr','Asc')->get();
    return $data;
 }
 function cek_unit($id){
@@ -229,8 +257,23 @@ function keyperson(){
    return $data;
 }
 
+function pimpinangcg(){
+   $data=App\Hasrole::where('kode',Auth::user()['kode'])->where('role_id',4)->count();
+   return $data;
+}
+
 function unit_keyperson(){
    $data=App\Hasrole::where('kode',Auth::user()['kode'])->where('role_id',1)->get();
+   return $data;
+}
+
+function pimpinansubdit(){
+   $data=App\Hasrole::where('kode',Auth::user()['kode'])->where('role_id',6)->count();
+   return $data;
+}
+
+function unit_pimpinansubdit(){
+   $data=App\Hasrole::where('kode',Auth::user()['kode'])->where('role_id',6)->get();
    return $data;
 }
 

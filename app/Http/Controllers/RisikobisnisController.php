@@ -38,6 +38,29 @@ class RisikobisnisController extends Controller
             return view('eror',compact('halaman','link'));
         }
     }
+
+    public function index_pimpinanunit(request $request){
+       
+        if(pimpinanunit()>0){
+            $halaman='Daftar Validasi Risiko Bisnis';
+            $link='risiko';
+            $unit_id=$request->unit;
+            if($request->periode==''){
+                $periode=periode_aktif()['id'];
+            }else{
+                $periode=$request->periode;
+            }
+            
+    
+            return view('risiko.index_pimpinanunit',compact('halaman','link','unit_id','periode'));
+        }else{
+            $halaman='Oops! Page not found.';
+            $link='admin';
+    
+            return view('eror',compact('halaman','link'));
+        }
+    }
+
     public function index_verifikatur(request $request){
        
         if(verifikatur()>0){
@@ -60,6 +83,28 @@ class RisikobisnisController extends Controller
         }
     }
 
+    public function index_pimpinangcg(request $request){
+       
+        if(pimpinangcg()>0){
+            $halaman='Daftar Risiko Bisnis Validasi';
+            $link='risiko';
+            $unit_id=$request->unit;
+            if($request->periode==''){
+                $periode=periode_aktif()['id'];
+            }else{
+                $periode=$request->periode;
+            }
+            
+    
+            return view('risiko.index_pimpinangcg',compact('halaman','link','unit_id','periode'));
+        }else{
+            $halaman='Oops! Page not found.';
+            $link='admin';
+    
+            return view('eror',compact('halaman','link'));
+        }
+    }
+
     public function ubah_sts($id){
         $data       =Risikobisnis::find($id);
         $data->sts  =1;
@@ -67,10 +112,11 @@ class RisikobisnisController extends Controller
 
         $cekalasan      = Alasan::where('risikobisnis_id',$id)->count();
         if($cekalasan>0){
-            $alasan      = Alasan::where('risikobisnis_id',$id)->first();
-            $alasan->sts = 1;
-            $alasan->save();
+            $alasan      = Alasan::where('risikobisnis_id',$id)->update([
+                'sts'=>1
+            ]);
         }
+        // echo $id;
         
        
     }
@@ -184,12 +230,12 @@ class RisikobisnisController extends Controller
         <input type="hidden" name="id" value="'.$data['id'].'" class="form-control">
             <table width="100%" border="1">
                 <tr>
-                    <th >Sumber risiko</th>
-                    <th width="16%">Mitigasi</th>
-                    <th width="16%">Biaya</th>
-                    <th width="16%">Waktu</th>
+                    <th >SUMBER RISIKO</th>
+                    <th width="16%">MITIGASI</th>
+                    <th width="16%">BIAYA</th>
+                    <th width="16%">WAKTU</th>
                     <th width="16%">PIC</th>
-                    <th width="16%">Status</th>
+                    <th width="16%">STATUS</th>
                 </tr>
         ';
 
@@ -197,15 +243,18 @@ class RisikobisnisController extends Controller
             if($x%2==0){$warna='#f5f5f5';}else{$warna='#fff';}
 
             echo'
+            <tr>
+                    <th colspan="6" style="text-align:left;background:#c4c7bf">SUMBER RISIKO KE '.$x.'</th>
+            </tr>
             <tr bgcolor="'.$warna.'">
-                <td><textarea name="sumber[]" style="width:100%" rows="4">'.cek_sumber($data['id'],$x)['sumber'].'</textarea></td>
-                <td><textarea name="mitigasi[]" style="width:100%" rows="4">'.cek_sumber($data['id'],$x)['mitigasi'].'</textarea></td>
+                <td><textarea name="sumber[]" style="width:100%" rows="5">'.cek_sumber($data['id'],$x)['sumber'].'</textarea></td>
+                <td><textarea name="mitigasi[]" style="width:100%" rows="5">'.cek_sumber($data['id'],$x)['mitigasi'].'</textarea></td>
                 <td>
                     <label>Biaya</label>
                     <input type="number" name="biaya[]" value="'.cek_sumber($data['id'],$x)['biaya'].'" style="width:100%;display:block">
                     <label>File</label>
                     <input type="file" name="file[]" style="width:100%;display:block">
-                    <input type="text" name="sumber_id[]" value="'.cek_sumber($data['id'],$x)['id'].'" style="width:100%;display:block">
+                    <input type="hidden" name="sumber_id[]" value="'.cek_sumber($data['id'],$x)['id'].'" style="width:100%;display:block">
                 </td>
                 <td>
                     <label>Startdate</label>
@@ -214,8 +263,8 @@ class RisikobisnisController extends Controller
                     <input type="text" name="end_date[]" id="datetanggal2'.$x.'" value="'.cek_sumber($data['id'],$x)['end_date'].'" style="width:100%;display:block">
 
                 </td>
-                <td><textarea name="pic[]" style="width:100%" rows="4">'.cek_sumber($data['id'],$x)['pic'].'</textarea></td>
-                <td><textarea name="status[]" style="width:100%" rows="4">'.cek_sumber($data['id'],$x)['status'].'</textarea></td>
+                <td><textarea name="pic[]" style="width:100%" rows="5">'.cek_sumber($data['id'],$x)['pic'].'</textarea></td>
+                <td><textarea name="status[]" style="width:100%" rows="5">'.cek_sumber($data['id'],$x)['status'].'</textarea></td>
                
             </tr>
             <tr>
@@ -424,7 +473,7 @@ class RisikobisnisController extends Controller
         $cek=strlen($request->name);
         echo'
             
-            <table class="table table-hover" style="width:98%;margin-left:1%">
+            <table class="table table-hover" style="width:98%;margin-left:1%;margin-bottom:4%">
                 <tr>
                     <th width="5%">No</th>
                     <th width="5%">Det</th>
@@ -458,12 +507,16 @@ class RisikobisnisController extends Controller
                             <td class="ttd">'.($no+1).'</td>
                             <td class="ttd">';
                             if($o['sts']==0){
-                                echo'<span class="btn btn-'.$btn.' btn-sm" '.$title.' onclick="sumber('.$o['id'].')"><i class="fa fa-reorder"></i></span></td>';
+                                echo'<span class="btn btn-'.$btn.' btn-sm" '.$title.' onclick="sumber('.$o['id'].')"><i class="fa fa-reorder"></i></span>';
+                                if(jum_alasan($o['id'],1)>0){
+                                    echo'<br><br><span class="btn btn-warning btn-sm" onclick="cek_alasan('.$o['id'].')" title="Alasan"><i class="fa fa-comment"></i></span>';
+                                }
                             }else{
                                 echo'<span class="btn btn-success btn-sm" title="Sumber Risiko" onclick="sumber_detail('.$o['id'].')"><i class="fa fa-reorder"></i></span>';
                             }
                             
                             echo'
+                            </td>
                             <td class="ttd">'.$o->kpi['name'].'</td>
                             <td class="ttd">'.$o['risiko'].'</td>
                             <td class="ttd">'.$o['akibat'].'</td>
@@ -479,6 +532,7 @@ class RisikobisnisController extends Controller
                                 <span class="btn btn-success btn-sm" onclick="ubah('.$o['id'].')"><i class="fa fa-pencil"></i></span><br><br>
                                 <span class="btn btn-primary btn-sm" onclick="hapus('.$o['id'].')"><i class="fa fa-gear"></i></span><br><br>
                                 <span class="btn btn-warning btn-sm" onclick="selesai('.$o['id'].')"><i class="fa fa-check"></i></span>';
+                                
                             }
                             else{
                                 echo'
@@ -494,11 +548,24 @@ class RisikobisnisController extends Controller
         ';
     }
 
+    public function ulasan(request $request,$id){
+        $data=Alasan::where('risikobisnis_id',$id)->where('role_id',$request->role)->where('sts',0)->get();
+        foreach($data as $o){
+            echo '
+            <div class="alert alert-info alert-dismissible">
+                <button type="button" class="close" data-dismiss="alert" aria-hidden="true">×</button>
+                <h4><i class="icon fa fa-ban"></i> Alert!</h4>
+                '.$o['keterangan'].'
+              </div>';
+        }
+        
+        
+    }
     public function view_data_verifikatur(request $request){
         $cek=strlen($request->unit);
         echo'
             
-            <table class="table table-hover" style="width:98%;margin-left:1%">
+            <table class="table table-hover" style="width:98%;margin-left:1%;margin-bottom:4%">
                 <tr>
                     <th width="5%">No </th>
                     <th width="5%">Det</th>
@@ -517,10 +584,10 @@ class RisikobisnisController extends Controller
                 if($cek>0){
                     
                     $unit=cek_unit($request->unit)['nama'];
-                    $data=Risikobisnis::with(['kpi','unit','periode','dampak','peluang','kriteria','kelompok'])->whereIn('sts',[1,2])->where('periode_id',$request->periode)->where('unit_id',$request->unit)->orderBy('id','Desc')->get();
+                    $data=Risikobisnis::with(['kpi','unit','periode','dampak','peluang','kriteria','kelompok'])->whereIn('sts',[1,2,3,4])->where('periode_id',$request->periode)->where('unit_id',$request->unit)->orderBy('id','Desc')->get();
                 }else{
                     $unit='All Unit Kerja';
-                    $data=Risikobisnis::with(['kpi','unit','periode','dampak','peluang','kriteria','kelompok'])->whereIn('sts',[1,2])->where('periode_id',$request->periode)->orderBy('id','Desc')->paginate(100);
+                    $data=Risikobisnis::with(['kpi','unit','periode','dampak','peluang','kriteria','kelompok'])->whereIn('sts',[1,2,3,4])->where('periode_id',$request->periode)->orderBy('id','Desc')->paginate(100);
                 }
                 // dd($data);
                 foreach($data as $no=>$o){
@@ -533,7 +600,13 @@ class RisikobisnisController extends Controller
                     echo'    
                         <tr bgcolor="'.$warna.'">
                             <td class="ttd">'.($no+1).'</td>
-                            <td class="ttd">'.$btn.'</td>
+                            <td class="ttd">
+                                '.$btn.'';
+                                if(jum_alasan($o['id'],2)>0){
+                                    echo'<br><br><span class="btn btn-warning btn-xs" onclick="cek_alasan('.$o['id'].')"><i class="fa fa-comment"></i></span>';
+                                }
+                            echo'
+                            </td>
                             <td class="ttd">'.$o->kpi['name'].'</td>
                             <td class="ttd">'.$o['risiko'].'</td>
                             <td class="ttd">'.$o['akibat'].'</td>
@@ -554,6 +627,162 @@ class RisikobisnisController extends Controller
                             if($o['sts']==1){
                                 echo'
                                 <span class="btn btn-warning btn-xs" onclick="cek_kelompok('.$o['id'].')"><i class="fa fa-gear"></i> Kelompok</span><br><br>
+                                <span class="btn btn-success btn-xs" onclick="validasi('.$o['id'].')"><i class="fa fa-pencil"></i> Validasi</span><br><br>';
+                                
+                            }else{
+                                echo'<span class="btn btn-default btn-xs" ><i class="fa fa-check"></i> selesai</span>';
+                            }
+                                
+                            echo'
+                            </td>
+                            
+                         </tr>';
+                }
+         echo'
+            </table>|'.$unit.'|'.total_risiko($request->unit,$request->periode).'|'.total_risiko_validasi($request->unit,$request->periode).'
+        ';
+    }
+
+    public function view_data_pimpinangcg(request $request){
+        $cek=strlen($request->unit);
+        echo'
+            
+            <table class="table table-hover" style="width:98%;margin-left:1%;margin-bottom:4%">
+                <tr>
+                    <th width="5%">No </th>
+                    <th width="5%">Det</th>
+                    <th>KPI</th>
+                    <th width="11%">Risiko</th>
+                    <th width="11%">Akibat</th>
+                    <th width="11%">Peluang</th>
+                    <th width="11%">Kelompok</th>
+                    <th width="6%">Kaidah</th>
+                    <th width="11%">Dampak</th>
+                    <th width="7%">warna</th>
+                    <th width="8%">Indikator</th>
+                    <th width="8%">Nilai Ambang</th>
+                    <th width="8%"></th>
+                </tr>';
+                if($cek>0){
+                    
+                    $unit=cek_unit($request->unit)['nama'];
+                    $data=Risikobisnis::with(['kpi','unit','periode','dampak','peluang','kriteria','kelompok'])->whereIn('sts',[3,4])->where('periode_id',$request->periode)->where('unit_id',$request->unit)->orderBy('id','Desc')->get();
+                }else{
+                    $unit='All Unit Kerja';
+                    $data=Risikobisnis::with(['kpi','unit','periode','dampak','peluang','kriteria','kelompok'])->whereIn('sts',[3,4])->where('periode_id',$request->periode)->orderBy('id','Desc')->paginate(100);
+                }
+                // dd($data);
+                foreach($data as $no=>$o){
+                    if(($no+1)%2==0){$warna='#f5f5f5';}else{$warna='#fff';}
+                    if(cek_sumber_risiko($o['id'])>0){
+                        $btn='<span class="btn btn-success btn-sm" title="Sumber Risiko" onclick="sumber('.$o['id'].')"><i class="fa fa-reorder"></i></span>';
+                    }else{
+                        $btn='';
+                    }
+                    echo'    
+                        <tr bgcolor="'.$warna.'">
+                            <td class="ttd">'.($no+1).'</td>
+                            <td class="ttd">
+                                '.$btn.'';
+                                if(jum_alasan($o['id'],2)>0){
+                                    echo'<br><br><span class="btn btn-warning btn-xs" onclick="cek_alasan('.$o['id'].')"><i class="fa fa-comment"></i></span>';
+                                }
+                            echo'
+                            </td>
+                            <td class="ttd">'.$o->kpi['name'].'</td>
+                            <td class="ttd">'.$o['risiko'].'</td>
+                            <td class="ttd">'.$o['akibat'].'</td>
+                            <td class="ttd">'.$o->peluang['kriteria'].'</td>
+                            <td class="ttd">'.$o->kelompok['name'].'</td>
+                            <td class="ttd">'.cek_kaidah($o['kaidah']).'</td>
+                            <td class="ttd">'.$o->kriteria['name'].'</td>
+                            <td class="ttd"><span class="label label-'.matrik($o['peluang_id'],$o['dampak_id'])['warna'].'">'.matrik($o['peluang_id'],$o['dampak_id'])['tingkat'].'</span></td>
+                            <td class="ttd">'.$o['indikator'].'</td>
+                            <td class="ttd">'.$o['nilai_ambang'].'</td>
+                            <td class="ttd">';
+                            if($o['sts']==3){
+                                echo'
+                                <span class="btn btn-success btn-xs" onclick="validasi('.$o['id'].')"><i class="fa fa-pencil"></i> Validasi</span><br><br>';
+                                
+                            }else{
+                                echo'<span class="btn btn-default btn-xs" ><i class="fa fa-check"></i> selesai</span>';
+                            }
+                                
+                            echo'
+                            </td>
+                            
+                         </tr>';
+                }
+         echo'
+            </table>|'.$unit.'|'.total_risiko($request->unit,$request->periode).'|'.total_risiko_validasi($request->unit,$request->periode).'
+        ';
+    }
+
+    public function view_data_pimpinanunit(request $request){
+        $cek=strlen($request->unit);
+        echo'
+            
+            <table class="table table-hover" style="width:98%;margin-left:1%;margin-bottom:4%">
+                <tr>
+                    <th width="5%">No </th>
+                    <th width="5%">Det</th>
+                    <th>KPI</th>
+                    <th width="11%">Risiko</th>
+                    <th width="11%">Akibat</th>
+                    <th width="11%">Peluang</th>
+                    <th width="11%">Kelompok</th>
+                    <th width="6%">Kaidah</th>
+                    <th width="11%">Dampak</th>
+                    <th width="7%">warna</th>
+                    <th width="8%">Indikator</th>
+                    <th width="8%">Nilai Ambang</th>
+                    <th width="8%"></th>
+                </tr>';
+                if($cek>0){
+                    
+                    $unit=cek_unit($request->unit)['nama'];
+                    $data=Risikobisnis::with(['kpi','unit','periode','dampak','peluang','kriteria','kelompok'])->whereIn('sts',[2,3,4])->where('periode_id',$request->periode)->where('unit_id',$request->unit)->orderBy('id','Desc')->get();
+                }else{
+                    $unit='All Unit Kerja';
+                    $data=Risikobisnis::with(['kpi','unit','periode','dampak','peluang','kriteria','kelompok'])->whereIn('sts',[2,3,4])->where('periode_id',$request->periode)->where('unit_id',$request->unit)->orderBy('id','Desc')->get();
+                }
+                // dd($data);
+                foreach($data as $no=>$o){
+                    if(($no+1)%2==0){$warna='#f5f5f5';}else{$warna='#fff';}
+                    if(cek_sumber_risiko($o['id'])>0){
+                        $btn='<span class="btn btn-success btn-sm" title="Sumber Risiko" onclick="sumber_detail('.$o['id'].')"><i class="fa fa-reorder"></i></span>';
+                    }else{
+                        $btn='';
+                    }
+                    echo'    
+                        <tr bgcolor="'.$warna.'">
+                            <td class="ttd">'.($no+1).'</td>
+                            <td class="ttd">
+                                '.$btn.'';
+                                if(jum_alasan($o['id'],3)>0){
+                                    echo'<br><br><span class="btn btn-warning btn-xs" onclick="cek_alasan('.$o['id'].')"><i class="fa fa-comment"></i></span>';
+                                }
+                            echo'
+                            </td>
+                            <td class="ttd">'.$o->kpi['name'].'</td>
+                            <td class="ttd">'.$o['risiko'].'</td>
+                            <td class="ttd">'.$o['akibat'].'</td>
+                            <td class="ttd">'.$o->peluang['kriteria'].'</td>
+                            <td class="ttd">'.$o->kelompok['name'].'</td>';
+                            if($o['sts']==1){
+                                echo'<td class="ttd">'.cek_kaidah_verifikatur($o['kaidah'],$o['id']).'</td>';
+                            }else{
+                                echo'<td class="ttd">'.cek_kaidah($o['kaidah']).'</td>';
+                            }
+                            echo'
+                            
+                            <td class="ttd">'.$o->kriteria['name'].'</td>
+                            <td class="ttd"><span class="label label-'.matrik($o['peluang_id'],$o['dampak_id'])['warna'].'">'.matrik($o['peluang_id'],$o['dampak_id'])['tingkat'].'</span></td>
+                            <td class="ttd">'.$o['indikator'].'</td>
+                            <td class="ttd">'.$o['nilai_ambang'].'</td>
+                            <td class="ttd">';
+                            if($o['sts']==2){
+                                echo'
                                 <span class="btn btn-success btn-xs" onclick="validasi('.$o['id'].')"><i class="fa fa-pencil"></i> Validasi</span>';
                             }else{
                                 echo'<span class="btn btn-default btn-xs" ><i class="fa fa-check"></i> selesai</span>';
@@ -659,12 +888,12 @@ class RisikobisnisController extends Controller
         if (isset($error)) {echo '<p style="padding:5px;background:#d1ffae;font-size:12px"><b>Error</b>: <br />'.implode('<br />', $error).'</p>';} 
         else{
             $cek=Risikobisnis::where('id',$request->risikobisnis_id)->first();
-            if($request->sts==0){
+            if($request->sts==0 && $request->role_id==1){
                 if($request->keterangan==''){
                     echo '<p style="padding:5px;background:#d1ffae;font-size:12px"><b>Error</b>: <br />- Masukan Alasan kenapa dikembalikan</p>';
                 }else{
                     $data               =   Risikobisnis::find($request->risikobisnis_id);
-                    $data->sts          =   0;
+                    $data->sts          =   $request->sts;
                     $data->save();
 
                     if($data){
@@ -674,13 +903,65 @@ class RisikobisnisController extends Controller
                         $alasan->unit_id = $cek['unit_id'];
                         $alasan->keterangan = $request->keterangan;
                         $alasan->sts = 0;
+                        $alasan->role_id = $request->role_id;
                         $alasan->save();
 
                         echo'ok|'.$cek['unit_id'];
                     }
                 }
                     
-            }else{
+            }
+
+            if($request->sts==1 && $request->role_id==2 ){
+                if($request->keterangan==''){
+                    echo '<p style="padding:5px;background:#d1ffae;font-size:12px"><b>Error</b>: <br />- Masukan Alasan kenapa dikembalikan</p>';
+                }else{
+                    $data               =   Risikobisnis::find($request->risikobisnis_id);
+                    $data->sts          =   $request->sts;
+                    $data->save();
+
+                    if($data){
+                        $alasan     = new Alasan;
+                        $alasan->risikobisnis_id = $request->risikobisnis_id;
+                        $alasan->periode_id = $cek['periode_id'];
+                        $alasan->unit_id = $cek['unit_id'];
+                        $alasan->keterangan = $request->keterangan;
+                        $alasan->sts = 0;
+                        $alasan->role_id = $request->role_id;
+                        $alasan->save();
+
+                        echo'ok|'.$cek['unit_id'];
+                    }
+                }
+                    
+            }
+
+            if($request->sts==2 && $request->role_id==3 ){
+                if($request->keterangan==''){
+                    echo '<p style="padding:5px;background:#d1ffae;font-size:12px"><b>Error</b>: <br />- Masukan Alasan kenapa dikembalikan</p>';
+                }else{
+                    $data               =   Risikobisnis::find($request->risikobisnis_id);
+                    $data->sts          =   $request->sts;
+                    $data->save();
+
+                    if($data){
+                        $alasan     = new Alasan;
+                        $alasan->risikobisnis_id = $request->risikobisnis_id;
+                        $alasan->periode_id = $cek['periode_id'];
+                        $alasan->unit_id = $cek['unit_id'];
+                        $alasan->keterangan = $request->keterangan;
+                        $alasan->sts = 0;
+                        $alasan->role_id = $request->role_id;
+                        $alasan->save();
+
+                        echo'ok|'.$cek['unit_id'];
+                    }
+                }
+                    
+            }
+            
+            
+            else{
                 $data               =   Risikobisnis::find($request->risikobisnis_id);
                 $data->sts          =   $request->sts;
                 $data->save();
@@ -769,11 +1050,13 @@ class RisikobisnisController extends Controller
                     
                 }
             }
-
-            $alasan      = Alasan::where('risikobisnis_id',$request->id)->first();
-            $alasan->sts = 1;
-            $alasan->save();
-                
+            $cekalasan      = Alasan::where('risikobisnis_id',$request->id)->count();
+            if($cekalasan>0){
+                $alasan      = Alasan::where('risikobisnis_id',$request->id)->first();
+                $alasan->sts = 1;
+                $alasan->save();
+            }
+            
             echo'ok';
         
     }

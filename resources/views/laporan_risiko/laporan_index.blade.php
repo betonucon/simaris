@@ -1,6 +1,6 @@
 <html>
     <head>
-        <title>Laporan</title>
+        <title>Laporan risiko bisnis {{$judul}}</title>
         <style>
             
         </style>

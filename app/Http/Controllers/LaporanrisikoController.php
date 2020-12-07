@@ -40,8 +40,8 @@ class LaporanrisikoController extends Controller
     }
     public function index_user(request $request){
        
-        if(verifikatur()>0){
-            $halaman='Daftar Risiko Bisnis';
+        if(verifikatur()>0 || pimpinangcg()>0){
+            $halaman='Laporan Risiko Bisnis';
             $link='risiko';
             $unit_id=$request->unit;
             if($request->periode==''){
@@ -52,6 +52,27 @@ class LaporanrisikoController extends Controller
             
     
             return view('laporan_risiko.index_verifikatur',compact('halaman','link','unit_id','periode'));
+        }else{
+            $halaman='Oops! Page not found.';
+            $link='admin';
+    
+            return view('eror',compact('halaman','link'));
+        }
+    }
+    public function index_pimpinansubdit(request $request){
+       
+        if(pimpinansubdit()>0){
+            $halaman='Laporan Risiko Bisnis '.cek_unit($request->unit)['nama'];
+            $link='risiko';
+            $unit_id=$request->unit;
+            if($request->periode==''){
+                $periode=periode_aktif()['id'];
+            }else{
+                $periode=$request->periode;
+            }
+            // dd(unit_bawahan_subdit($unit_id));
+    
+            return view('laporan_risiko.index_pimpinansubdit',compact('halaman','link','unit_id','periode'));
         }else{
             $halaman='Oops! Page not found.';
             $link='admin';
@@ -138,6 +159,88 @@ class LaporanrisikoController extends Controller
         ';
     }
 
+    public function view_data_pimpinansubdit(request $request){
+        $cek=strlen($request->name);
+        echo'
+            <style>
+                th{
+                    font-size:12px;
+                    background:#b0e6e6;
+                    border:solid 1px #000;
+                    text-align:center;
+                    padding:5px;
+                    text-transform:uppercase;
+                }
+                td{
+                    font-size:12px;
+                    border:solid 1px #000;
+                    vertical-align:top;
+                    padding:5px;
+                }
+            </style>';
+            foreach(unit_bawahan_subdit($request->unit) as $uni){
+                echo'
+                    <table  style="width:98%;margin-left:1%">
+                        <tr>
+                            <th colspan="10" style="text-align:left">'.$uni['nama'].'</th>
+                        </tr>
+                        <tr>
+                            <th rowspan="2" width="5%">No</th>
+                            <th rowspan="2">KPI</th>
+                            <th rowspan="2" width="11%">Nama Risiko</th>
+                            <th rowspan="2" width="11%">Sumber risiko</th>
+                            <th rowspan="2" width="11%">Akibat</th>
+                            <th rowspan="2" width="11%">Tingkat Risiko</th>
+                            <th colspan="4">Respon Risiko</th>
+                            
+                        </tr>
+                        <tr>
+                            <th width="11%">Mitigasi</th> 
+                            <th width="10%">Target</th> 
+                            <th width="9%">PIC</th> 
+                            <th width="6%">Status</th> 
+                        </tr>';
+                        if($cek>0){
+                            $data=Risikobisnis::with(['kpi','unit','periode','dampak','peluang','kriteria'])->where('unit_id',$uni['objectabbr'])->where('periode_id',$request->periode)->orderBy('id','Desc')->get();
+                        }else{
+                            // $data=Risikobisnis::with(['unit'])->orderBy('id','Desc')->get();
+                            $data=Risikobisnis::with(['kpi','unit','periode','dampak','peluang','kriteria'])->where('unit_id',$uni['objectabbr'])->where('periode_id',$request->periode)->orderBy('id','Desc')->get();
+                        }
+                        // dd($data);
+                        foreach($data as $no=>$o){
+                            foreach(get_sumber($o['id']) as $xx=>$sumber){
+                            
+                                echo'    
+                                    <tr >';
+                                    if($xx==0){
+                                        echo'
+                                        <td class="ttd" align="center" rowspan="'.jum_sumber($o['id']).'">'.($no+1).'</td>
+                                        <td class="ttd" rowspan="'.jum_sumber($o['id']).'">'.$o->kpi['name'].'</td>
+                                        <td class="ttd" rowspan="'.jum_sumber($o['id']).'">'.$o['risiko'].'</td>';
+                                    }
+                                        echo'
+                                        <td class="ttd">'.$sumber['sumber'].'</td>';
+                                    if($xx==0){
+                                        echo'
+                                        <td class="ttd" rowspan="'.jum_sumber($o['id']).'">'.$o['akibat'].'</td>
+                                        <td class="ttd" align="center" rowspan="'.jum_sumber($o['id']).'">'.matrik($o['peluang_id'],$o['dampak_id'])['tingkat'].'</td>';
+                                    }
+                                        echo'
+                                        <td class="ttd">'.$sumber['mitigasi'].'</td>
+                                        <td class="ttd">'.$sumber['start_date'].' s/d '.$sumber['end_date'].'</td>
+                                        <td class="ttd">'.$sumber['pic'].'</td>
+                                        <td class="ttd">'.$sumber['status'].'</td>
+                                        
+                                        
+                                    </tr>';
+                            }
+                        }
+                    echo'
+                    </table><br><br>
+                    ';
+            }
+    }
+
     public function laporan_risiko(request $request){
         
         $tampil='
@@ -175,8 +278,8 @@ class LaporanrisikoController extends Controller
                     <th width="6%">Status</th> 
                 </tr>';
                 
-                    $data=Risikobisnis::with(['kpi','unit','periode','dampak','peluang','kriteria'])->where('unit_id',$request->unit)->where('periode_id',$request->periode)->orderBy('id','Desc')->get();
-                
+                $data=Risikobisnis::with(['kpi','unit','periode','dampak','peluang','kriteria'])->where('unit_id',$request->unit)->where('periode_id',$request->periode)->orderBy('id','Desc')->get();
+                $judul=cek_unit($request->unit)['nama'];
                 foreach($data as $no=>$o){
                     foreach(get_sumber($o['id']) as $xx=>$sumber){
                     
@@ -210,7 +313,93 @@ class LaporanrisikoController extends Controller
         ';
 
        
-        return view('laporan_risiko.laporan_index',compact('tampil'));
+        return view('laporan_risiko.laporan_index',compact('tampil','judul'));
+    }
+
+    public function laporan_risiko_subdit(request $request){
+        
+        $tampil='
+            <style>
+                th{
+                    font-size:12px;
+                    background:#b0e6e6;
+                    border:solid 1px #000;
+                    text-align:center;
+                    padding:5px;
+                    text-transform:uppercase;
+                }
+                td{
+                    font-size:12px;
+                    border:solid 1px #000;
+                    vertical-align:top;
+                    padding:5px;
+                }
+            </style>';
+            $judul=cek_unit($request->unit)['nama'];
+            foreach(unit_bawahan_subdit($request->unit) as $uni){
+                $tampil.='
+                    <table  style="width:98%;margin-left:1%;border-collapse:collapse">
+                        <tr>
+                            <th colspan="10" style="text-align:left">'.$uni['nama'].'</th>
+                        </tr>
+            
+           
+                        <tr>
+                            <th rowspan="2" width="5%">No</th>
+                            <th rowspan="2">KPI</th>
+                            <th rowspan="2" width="11%">Nama Risiko</th>
+                            <th rowspan="2" width="11%">Sumber risiko</th>
+                            <th rowspan="2" width="11%">Akibat</th>
+                            <th rowspan="2" width="11%">Tingkat Risiko</th>
+                            <th colspan="4">Respon Risiko</th>
+                            
+                        </tr>
+                        <tr>
+                            <th width="11%">Mitigasi</th> 
+                            <th width="10%">Target</th> 
+                            <th width="9%">PIC</th> 
+                            <th width="6%">Status</th> 
+                        </tr>';
+                        
+                            $data=Risikobisnis::with(['kpi','unit','periode','dampak','peluang','kriteria'])->where('unit_id',$uni['objectabbr'])->where('periode_id',$request->periode)->orderBy('id','Desc')->get();
+                        
+                        foreach($data as $no=>$o){
+                            foreach(get_sumber($o['id']) as $xx=>$sumber){
+                            
+                                $tampil.='   
+                                    <tr >';
+                                    if($xx==0){
+                                        $tampil.='
+                                        <td class="ttd" align="center" rowspan="'.jum_sumber($o['id']).'">'.($no+1).'</td>
+                                        <td class="ttd" rowspan="'.jum_sumber($o['id']).'">'.$o->kpi['name'].'</td>
+                                        <td class="ttd" rowspan="'.jum_sumber($o['id']).'">'.$o['risiko'].'</td>';
+                                    }
+                                        $tampil.='
+                                        <td class="ttd">'.$sumber['sumber'].'</td>';
+                                    if($xx==0){
+                                        $tampil.='
+                                        <td class="ttd" rowspan="'.jum_sumber($o['id']).'">'.$o['akibat'].'</td>
+                                        <td class="ttd" align="center" rowspan="'.jum_sumber($o['id']).'">'.matrik($o['peluang_id'],$o['dampak_id'])['tingkat'].'</td>';
+                                    }
+                                        $tampil.='
+                                        <td class="ttd">'.$sumber['mitigasi'].'</td>
+                                        <td class="ttd">'.$sumber['start_date'].' s/d '.$sumber['end_date'].'</td>
+                                        <td class="ttd">'.$sumber['pic'].'</td>
+                                        <td class="ttd">'.$sumber['status'].'</td>
+                                        
+                                        
+                                    </tr>';
+                            }
+                        }
+                    $tampil.='
+                        <tr>
+                            <td colspan="10">&nbsp;</td>
+                        </tr>
+                    </table>
+            ';
+
+         }
+        return view('laporan_risiko.laporan_index',compact('tampil','judul'));
     }
 
     public function view_data_verifikatur(request $request){

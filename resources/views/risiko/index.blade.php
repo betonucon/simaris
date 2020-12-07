@@ -66,17 +66,7 @@
                     <!-- /.info-box -->
                 </div>
             </div>
-            <div class="box-header" style="margin-bottom:1%">
-                <ul class="todo-list ui-sortable">
-                    @foreach(get_alasan($unit_id,$periode) as $alasan)
-                    <li>
-                        <span class="handle ui-sortable-handle"><i class="fa fa fa-comment"></i></span>
-                        <span class="text">{{$alasan['keterangan']}}</span>
-                    </li>
-                    @endforeach
-                                
-                </ul>
-            </div>
+            
             <div class="box-header" style="margin-bottom:1%">
                 
               <h3 class="box-title">
@@ -111,7 +101,30 @@
     </div>
 </section>
 
-
+<div class="modal fade" id="modalulasan" style="display: none;">
+    <div class="modal-dialog" style="margin-top: 5%;">
+        <div class="modal-content">
+            <div class="modal-header">
+            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                <span aria-hidden="true">×</span></button>
+            <h4 class="modal-title">Ulasan Verifikatur </h4>
+            </div>
+            <div class="modal-body">
+                <div id="notifikasiubahsts"></div>
+                <form method="post" id="myubah_data_sts" enctype="multipart/form-data">
+                    @csrf
+                    
+                    <div id="tampilkanulasan"></div>
+                        
+                    
+                </form>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-default pull-left" data-dismiss="modal">Tutup</button>
+            </div>
+        </div>
+    </div>
+</div>
 <div class="modal fade" id="modal-default" style="display: none;">
     <div class="modal-dialog" style="margin-top: 0%;width:90%">
         <div class="modal-content" style="display: flow-root;">
@@ -224,7 +237,7 @@
                 <span aria-hidden="true">×</span></button>
             <h4 class="modal-title">Sumber Risiko</h4>
             </div>
-            <div class="modal-body">
+            <div class="modal-body" style="width:100%;height:550px;overflow-x:scroll">
                 <div id="notifikasiubah"></div>
                 <form method="post" id="myubah_data" enctype="multipart/form-data">
                     @csrf
@@ -383,6 +396,22 @@
             
 
         });
+
+        function cek_alasan(a){
+           
+           $.ajax({
+               type: 'GET',
+               url: "{{url('risiko/ulasan')}}/"+a+"?role=1",
+               data: "id=id",
+               success: function(msg){
+                   $('#modalulasan').modal({backdrop: 'static', keyboard: false});
+                   $("#tampilkanulasan").html(msg);
+                   
+                  
+               }
+           });
+            
+        }
 
         function cari(a){
            

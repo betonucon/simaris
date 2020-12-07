@@ -196,7 +196,7 @@ class KpiController extends Controller
         $cek=strlen($request->name);
         echo'
             
-            <table class="table table-hover" style="width:98%;margin-left:1%">
+            <table class="table table-hover" style="width:98%;margin-left:1%;margin-bottom:4%">
                 <tr>
                     <th width="5%">No </th>
                     <th width="7%">Kode KPI</th>
@@ -247,7 +247,7 @@ class KpiController extends Controller
         $cek=strlen($request->name);
         echo'
             
-            <table class="table table-hover" style="width:98%;margin-left:1%">
+            <table class="table table-hover" style="width:98%;margin-left:1%;margin-bottom:4%">
                 <tr>
                     <th width="5%">No</th>
                     <th width="7%">Kode KPI</th>
@@ -300,7 +300,7 @@ class KpiController extends Controller
         $cek=strlen($request->name);
         echo'
             
-            <table class="table table-hover" style="width:98%;margin-left:1%">
+            <table class="table table-hover" style="width:98%;margin-left:1%;margin-bottom:4%">
                 <tr>
                     <th width="5%">No</th>
                     <th width="7%">Kode KPI</th>
