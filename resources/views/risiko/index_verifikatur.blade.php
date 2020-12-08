@@ -30,36 +30,30 @@
             <div class="box-header" style="margin-bottom:1%;text-align:center">
 
                 <div class="col-md-4 col-sm-6 col-xs-6">
-                    <div class="info-box">
-                        <span class="info-box-icon bg-aqua"><i class="ion ion-ios-gear-outline" style="margin-top: 20%;"></i></span>
-
+                    <div class="info-box" style="min-height:40px">
                         <div class="info-box-content">
                         <span class="info-box-text">Total KPI  </span>
-                        <span class="info-box-number"><p id="labelnya"></p><small> KPI</small></span>
+                        <span class="info-box-number"><p id="labelnya" style="display:inline"></p> KPI</span>
                         </div>
                         <!-- /.info-box-content -->
                     </div>
                     <!-- /.info-box -->
                 </div>
                 <div class="col-md-4 col-sm-6 col-xs-12">
-                    <div class="info-box">
-                        <span class="info-box-icon bg-green"><i class="ion ion-ios-gear-outline" style="margin-top: 20%;"></i></span>
-
+                    <div class="info-box" style="min-height:40px">
                         <div class="info-box-content">
                         <span class="info-box-text">Sudah diproses</span>
-                        <span class="info-box-number"><p id="labelnya2"></p><small> KPI</small></span>
+                        <span class="info-box-number"><p id="labelnya2" style="display:inline"></p> KPI</span>
                         </div>
                         <!-- /.info-box-content -->
                     </div>
                     <!-- /.info-box -->
                 </div>
                 <div class="col-md-4 col-sm-6 col-xs-12">
-                    <div class="info-box">
-                        <span class="info-box-icon bg-red"><i class="ion ion-ios-gear-outline" style="margin-top: 20%;"></i></span>
-
+                    <div class="info-box" style="min-height:40px">
                         <div class="info-box-content">
                         <span class="info-box-text">Belum diproses</span>
-                        <span class="info-box-number"><p id="labelnya3"></p><small> KPI</small></span>
+                        <span class="info-box-number"><p id="labelnya3" style="display:inline"></p> KPI</span>
                         </div>
                         <!-- /.info-box-content -->
                     </div>

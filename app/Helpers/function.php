@@ -63,12 +63,20 @@ function kelompok(){
 
 
 function dampak(){
-   $data=App\Dampak::orderBy('id','Desc')->get();
+   $data=App\Dampak::orderBy('name','Asc')->get();
+   return $data;
+}
+function cek_kriteria($id){
+   $data=App\Kriteria::where('id',$id)->first();
    return $data;
 }
 
 function get_kriteria($dampakid,$kategoriid,$level){
    $data=App\Kriteria::where('dampak_id',$dampakid)->where('kategori_id',$kategoriid)->where('level',$level)->get();
+   return $data;
+}
+function kriteria($dampakid,$kategoriid){
+   $data=App\Kriteria::where('dampak_id',$dampakid)->where('kategori_id',$kategoriid)->get();
    return $data;
 }
 function klasifikasi(){
@@ -78,6 +86,10 @@ function klasifikasi(){
 
 function peluang(){
    $data=App\Peluang::orderBy('id','Desc')->get();
+   return $data;
+}
+function kategori(){
+   $data=App\Kategori::orderBy('id','Desc')->get();
    return $data;
 }
 

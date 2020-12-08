@@ -156,13 +156,6 @@ class RisikobisnisController extends Controller
                         </select>
                     </div>
                     <div class="form-group" style="margin-bottom: 0px;">
-                        <label>Indikator</label>
-                        <textarea name="indikator" class="form-control" placeholde="Enter.................." rows="3">'.$data['indikator'].'</textarea>
-                    </div>
-                </div>
-                <div class="col-sm-6">
-                    
-                    <div class="form-group" style="margin-bottom: 0px;">
                         <label>Peluang </label>
                         <select name="peluang_id"  id="klasifikasi_id" class="form-control" placeholder="Search">
                                 <option value="">Pilih Peluang</option>';
@@ -173,26 +166,25 @@ class RisikobisnisController extends Controller
                             echo'
                         </select>
                     </div>
+                </div>
+                <div class="col-sm-6">
+                    
+                    
+                    <div class="form-group" style="margin-bottom: 0px;">
+                        <label>Dampak </label><br>
+                        <span class="btn btn-primary btn-sm" onclick="dampaknya()"><i class="fa fa-search"> Dampak</i></span>
+                        <br><br><textarea disabled id="nama_kriteriad" class="form-control" rows="3">'.cek_kriteria($data['kriteria_id'])['name'].'</textarea>
+                        <input type="hidden" name="kriteria_id" id="kriteria_idd" class="form-control" value="'.$data['kriteria_id'].'" >
+                        <input type="hidden" name="kategori_id" id="kategori_idd" class="form-control" value="'.$data['kategori_id'].'" >
+                        <input type="hidden" name="dampak_id" id="dampak_idd" class="form-control" value="'.$data['dampak_id'].'" >
+                    </div>
+                    <div class="form-group" style="margin-bottom: 0px;">
+                        <label>Indikator</label>
+                        <textarea name="indikator" class="form-control" placeholde="Enter.................." rows="3">'.$data['indikator'].'</textarea>
+                    </div>
                     <div class="form-group" style="margin-bottom: 0px;">
                         <label>Nilai Ambang</label>
-                        <input type="text" name="nilai_ambang" class="form-control" value="'.$data['nilai_ambang'].'" >
-                    </div>
-                    <div class="form-group" style="margin-bottom: 0px;">
-                        <label>Dampak </label>
-                        <select name="dampak_id"  id="dampak_id" onchange="cek_dampak_2(this.value)" class="form-control" placeholder="Search">
-                                <option value="">Pilih Dampak</option>';
-                                foreach(dampak() as $dampak){
-                                    if($data['dampak_id']==$dampak['id']){$cekdam='selected';}else{$cekdam='';}
-                                    echo'<option value="'.$dampak['id'].'" '.$cekdam.' >['.$dampak['id'].'] '.$dampak['name'].'</option>';
-                                }
-                            echo'
-                        </select>
-                        
-                    </div>
-                    <div class="form-group" style="margin-bottom: 0px;">
-                        <label>Kategori risiko/view_dampak_edit?dampak='.$data['dampak_id'].'&ket='.$data['kriteria_id'].'&kat='.$data['kategori_id'].'</label>
-                        <div id="tampildampak_2">
-                        </div>
+                        <input type="text" name="nilai_ambang" class="form-control" value="'.$data['nilai_ambang'].'">
                     </div>
                     
                     
@@ -519,10 +511,10 @@ class RisikobisnisController extends Controller
                     <th>KPI</th>
                     <th width="11%">Risiko</th>
                     <th width="11%">Akibat</th>
-                    <th width="11%">Peluang</th>
                     <th width="6%">Kaidah</th>
+                    <th width="11%">Peluang</th>
                     <th width="11%">Dampak</th>
-                    <th width="7%">warna</th>
+                    <th width="7%">Tingkat Risiko</th>
                     <th width="8%">Indikator</th>
                     <th width="8%">Nilai Ambang</th>
                     <th width="4%"></th>
@@ -559,8 +551,9 @@ class RisikobisnisController extends Controller
                             <td class="ttd">'.$o->kpi['name'].'</td>
                             <td class="ttd">'.$o['risiko'].'</td>
                             <td class="ttd">'.$o['akibat'].'</td>
-                            <td class="ttd">'.$o->peluang['kriteria'].'</td>
                             <td class="ttd">'.cek_kaidah($o['kaidah']).'</td>
+                            <td class="ttd">'.$o->peluang['kriteria'].'</td>
+                            
                             <td class="ttd">'.$o->kriteria['name'].'</td>
                             <td class="ttd"><span class="label label-'.matrik($o['peluang_id'],$o['dampak_id'])['warna'].'">'.matrik($o['peluang_id'],$o['dampak_id'])['tingkat'].'</span></td>
                             <td class="ttd">'.$o['indikator'].'</td>
@@ -569,7 +562,7 @@ class RisikobisnisController extends Controller
                             if($o['sts']==0){
                                 echo'
                                 <span class="btn btn-success btn-sm" onclick="ubah('.$o['id'].')"><i class="fa fa-pencil"></i></span><br><br>
-                                <span class="btn btn-primary btn-sm" onclick="hapus('.$o['id'].')"><i class="fa fa-gear"></i></span><br><br>
+                                <span class="btn btn-danger btn-sm" onclick="hapus('.$o['id'].')"><i class="fa fa-remove"></i></span><br><br>
                                 <span class="btn btn-warning btn-sm" onclick="selesai('.$o['id'].')"><i class="fa fa-check"></i></span>';
                                 
                             }
@@ -611,11 +604,11 @@ class RisikobisnisController extends Controller
                     <th>KPI</th>
                     <th width="11%">Risiko</th>
                     <th width="11%">Akibat</th>
-                    <th width="11%">Peluang</th>
-                    <th width="11%">Kelompok</th>
                     <th width="6%">Kaidah</th>
+                    <th width="11%">Kelompok</th>
+                    <th width="11%">Peluang</th>
                     <th width="11%">Dampak</th>
-                    <th width="7%">warna</th>
+                    <th width="7%">Tingkat Risiko</th>
                     <th width="8%">Indikator</th>
                     <th width="8%">Nilai Ambang</th>
                     <th width="8%"></th>
@@ -648,16 +641,17 @@ class RisikobisnisController extends Controller
                             </td>
                             <td class="ttd">'.$o->kpi['name'].'</td>
                             <td class="ttd">'.$o['risiko'].'</td>
-                            <td class="ttd">'.$o['akibat'].'</td>
-                            <td class="ttd">'.$o->peluang['kriteria'].'</td>
-                            <td class="ttd">'.$o->kelompok['name'].'</td>';
+                            <td class="ttd">'.$o['akibat'].'</td>';
                             if($o['sts']==1){
                                 echo'<td class="ttd">'.cek_kaidah_verifikatur($o['kaidah'],$o['id']).'</td>';
                             }else{
                                 echo'<td class="ttd">'.cek_kaidah($o['kaidah']).'</td>';
                             }
                             echo'
+                            <td class="ttd">'.$o->kelompok['name'].'</td>
+                            <td class="ttd">'.$o->peluang['kriteria'].'</td>
                             
+                           
                             <td class="ttd">'.$o->kriteria['name'].'</td>
                             <td class="ttd"><span class="label label-'.matrik($o['peluang_id'],$o['dampak_id'])['warna'].'">'.matrik($o['peluang_id'],$o['dampak_id'])['tingkat'].'</span></td>
                             <td class="ttd">'.$o['indikator'].'</td>
@@ -693,9 +687,9 @@ class RisikobisnisController extends Controller
                     <th>KPI</th>
                     <th width="11%">Risiko</th>
                     <th width="11%">Akibat</th>
-                    <th width="11%">Peluang</th>
-                    <th width="11%">Kelompok</th>
                     <th width="6%">Kaidah</th>
+                    <th width="11%">Kelompok</th>
+                    <th width="11%">Peluang</th>
                     <th width="11%">Dampak</th>
                     <th width="7%">warna</th>
                     <th width="8%">Indikator</th>
@@ -731,9 +725,9 @@ class RisikobisnisController extends Controller
                             <td class="ttd">'.$o->kpi['name'].'</td>
                             <td class="ttd">'.$o['risiko'].'</td>
                             <td class="ttd">'.$o['akibat'].'</td>
-                            <td class="ttd">'.$o->peluang['kriteria'].'</td>
-                            <td class="ttd">'.$o->kelompok['name'].'</td>
                             <td class="ttd">'.cek_kaidah($o['kaidah']).'</td>
+                            <td class="ttd">'.$o->kelompok['name'].'</td>
+                            <td class="ttd">'.$o->peluang['kriteria'].'</td>
                             <td class="ttd">'.$o->kriteria['name'].'</td>
                             <td class="ttd"><span class="label label-'.matrik($o['peluang_id'],$o['dampak_id'])['warna'].'">'.matrik($o['peluang_id'],$o['dampak_id'])['tingkat'].'</span></td>
                             <td class="ttd">'.$o['indikator'].'</td>
@@ -768,9 +762,9 @@ class RisikobisnisController extends Controller
                     <th>KPI</th>
                     <th width="11%">Risiko</th>
                     <th width="11%">Akibat</th>
-                    <th width="11%">Peluang</th>
-                    <th width="11%">Kelompok</th>
                     <th width="6%">Kaidah</th>
+                    <th width="11%">Kelompok</th>
+                    <th width="11%">Peluang</th>
                     <th width="11%">Dampak</th>
                     <th width="7%">warna</th>
                     <th width="8%">Indikator</th>
@@ -806,15 +800,9 @@ class RisikobisnisController extends Controller
                             <td class="ttd">'.$o->kpi['name'].'</td>
                             <td class="ttd">'.$o['risiko'].'</td>
                             <td class="ttd">'.$o['akibat'].'</td>
+                            <td class="ttd">'.cek_kaidah($o['kaidah']).'</td>
+                            <td class="ttd">'.$o->kelompok['name'].'</td>
                             <td class="ttd">'.$o->peluang['kriteria'].'</td>
-                            <td class="ttd">'.$o->kelompok['name'].'</td>';
-                            if($o['sts']==1){
-                                echo'<td class="ttd">'.cek_kaidah_verifikatur($o['kaidah'],$o['id']).'</td>';
-                            }else{
-                                echo'<td class="ttd">'.cek_kaidah($o['kaidah']).'</td>';
-                            }
-                            echo'
-                            
                             <td class="ttd">'.$o->kriteria['name'].'</td>
                             <td class="ttd"><span class="label label-'.matrik($o['peluang_id'],$o['dampak_id'])['warna'].'">'.matrik($o['peluang_id'],$o['dampak_id'])['tingkat'].'</span></td>
                             <td class="ttd">'.$o['indikator'].'</td>
@@ -846,12 +834,10 @@ class RisikobisnisController extends Controller
         if (trim($request->peluang_id) == '') {$error[] = '- Pilih Peluang terlebih dahulu';}
         if (trim($request->klasifikasi_id) == '') {$error[] = '- Pilih klasifikasi terlebih dahulu';}
         if (trim($request->dampak_id) == '') {$error[] = '- Pilih Dampak terlebih dahulu';}
-        if (trim($request->indikator) == '') {$error[] = '- Isi Indikator terlebih dahulu';}
-        if (trim($request->nilai_ambang) == '') {$error[] = '- Isi Nilai Ambang terlebih dahulu';}
         if (trim($request->kriteria_id) == '') {$error[] = '- Pilih Kriteria terlebih dahulu';}
         if (isset($error)) {echo '<p style="padding:5px;background:#d1ffae;font-size:12px"><b>Error</b>: <br />'.implode('<br />', $error).'</p>';} 
         else{
-            $per=explode('/',$request->kriteria_id);
+            
             $data               =   new Risikobisnis;
             $data->risiko       =   $request->risiko;
             $data->unit_id      =   $request->unit_id;
@@ -862,9 +848,9 @@ class RisikobisnisController extends Controller
             $data->peluang_id   =   $request->peluang_id;
             $data->indikator   =   $request->indikator;
             $data->nilai_ambang   =   $request->nilai_ambang;
-            $data->kriteria_id   =   $per[0];
+            $data->kriteria_id   =   $request->kriteria_id;
             $data->tanggal       =   date('Y-m-d');
-            $data->kategori_id   =   $per[1];
+            $data->kategori_id   =   $request->kategori_id;
             $data->sts          =   0;
             $data->kaidah          =   0;
             $data->klasifikasi_id    =   $request->klasifikasi_id;
@@ -1024,32 +1010,34 @@ class RisikobisnisController extends Controller
         if (trim($request->peluang_id) == '') {$error[] = '- Pilih Peluang terlebih dahulu';}
         if (trim($request->klasifikasi_id) == '') {$error[] = '- Pilih klasifikasi terlebih dahulu';}
         if (trim($request->dampak_id) == '') {$error[] = '- Pilih Dampak terlebih dahulu';}
-        if (trim($request->indikator) == '') {$error[] = '- Isi Indikator terlebih dahulu';}
-        if (trim($request->nilai_ambang) == '') {$error[] = '- Isi Nilai Ambang terlebih dahulu';}
         if (trim($request->kriteria_id) == '') {$error[] = '- Pilih Kriteria terlebih dahulu';}
         if (isset($error)) {echo '<p style="padding:5px;background:#d1ffae;font-size:12px"><b>Error</b>: <br />'.implode('<br />', $error).'</p>';} 
         else{
-            $per=explode('/',$request->kriteria_id);
+            
             $data               =   Risikobisnis::find($request->id);
             $data->risiko       =   $request->risiko;
             $data->akibat       =   $request->akibat;
             $data->peluang_id   =   $request->peluang_id;
             $data->indikator   =   $request->indikator;
             $data->nilai_ambang   =   $request->nilai_ambang;
-            $data->kriteria_id   =   $per[0];
+            $data->kriteria_id   =   $request->kriteria_id;
             $data->tanggal       =   date('Y-m-d');
-            $data->kategori_id   =   $per[1];
+            $data->kategori_id   =   $request->kategori_id;
             $data->klasifikasi_id    =   $request->klasifikasi_id;
             $data->dampak_id    =   $request->dampak_id;
             $data->creator      =   Auth::user()['kode'];
             $data->save();
 
-            if($data){
+            
+            $cekalasan      = Alasan::where('risikobisnis_id',$request->id)->count();
+            if($cekalasan>0){
                 $alasan      = Alasan::where('risikobisnis_id',$request->id)->first();
                 $alasan->sts = 1;
                 $alasan->save();
-                echo'ok';
+
+                
             }
+            echo'ok';
 
         }
         

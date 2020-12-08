@@ -27,12 +27,11 @@
         <div class="col-xs-12">
           <div class="box">
             
-            <div class="box-header" style="margin-bottom:1%;text-align:center">
+            <div class="box-header" style="margin-bottom:0%;text-align:center">
 
                 <div class="col-md-4 col-sm-6 col-xs-6">
-                    <div class="info-box">
-                        <span class="info-box-icon bg-aqua"><i class="ion ion-ios-gear-outline" style="margin-top: 20%;"></i></span>
-
+                    <div class="info-box" style="min-height:40px">
+                        
                         <div class="info-box-content">
                         <span class="info-box-text">Total KPI  </span>
                         <span class="info-box-number">{{total_kpi_unit($unit_id,periode_aktif()['id'])}}<small> KPI</small></span>
@@ -42,9 +41,8 @@
                     <!-- /.info-box -->
                 </div>
                 <div class="col-md-4 col-sm-6 col-xs-12">
-                    <div class="info-box">
-                        <span class="info-box-icon bg-green"><i class="ion ion-ios-gear-outline" style="margin-top: 20%;"></i></span>
-
+                    <div class="info-box" style="min-height:40px">
+                        
                         <div class="info-box-content">
                         <span class="info-box-text">Sudah diproses</span>
                         <span class="info-box-number">{{total_kpi_unit_proses($unit_id,periode_aktif()['id'])}}<small> KPI</small></span>
@@ -54,9 +52,8 @@
                     <!-- /.info-box -->
                 </div>
                 <div class="col-md-4 col-sm-6 col-xs-12">
-                    <div class="info-box">
-                        <span class="info-box-icon bg-red"><i class="ion ion-ios-gear-outline" style="margin-top: 20%;"></i></span>
-
+                    <div class="info-box" style="min-height:40px">
+                        
                         <div class="info-box-content">
                         <span class="info-box-text">Belum diproses</span>
                         <span class="info-box-number">{{(total_kpi_unit($unit_id,periode_aktif()['id'])-total_kpi_unit_proses($unit_id,periode_aktif()['id']))}}<small> KPI</small></span>
@@ -67,7 +64,7 @@
                 </div>
             </div>
             
-            <div class="box-header" style="margin-bottom:1%">
+            <div class="box-header" style="margin-bottom:0%">
                 
               <h3 class="box-title">
                 <span class="btn btn-success btn-sm" onclick="tambah()"><i class="fa fa-plus"></i> Tambah Baru</span>
@@ -125,6 +122,43 @@
         </div>
     </div>
 </div>
+<div class="modal fade" id="modaldampak" style="display: none;z-index: 2000;">
+    <div class="modal-dialog" style="margin-top: 1%;width:80%">
+        <div class="modal-content">
+            <div class="modal-body">
+                <table width="100%">
+                    <tr>
+                        <th>No</th>
+                        <th>DAMPAK</th>
+                        @foreach(kategori() as $kategori)
+                            <th style="text-transform:uppercase;padding:5px">{{$kategori['name']}}</th>
+                        @endforeach
+                        
+                    </tr>
+                    @foreach(dampak() as $da=>$dampak)
+                        <tr>
+                            <td style="padding:5px;vertical-align:top">{{$da+1}}</td>
+                            <td style="padding:5px;vertical-align:top">{{$dampak['name']}}</td>
+                            @foreach(kategori() as $kategori)
+                                <td style="padding:5px;vertical-align:top;font-size:11px">
+                                       @foreach(kriteria($dampak['id'],$kategori['id']) as $ket=>$kriteria) 
+                                            @if($ket==1) <hr> @endif
+                                            <a href="#" onclick="pilihdampak('{{$kriteria['name']}}','{{$kriteria['id']}}','{{$kategori['id']}}','{{$dampak['id']}}')">{{$kriteria['name']}}</a>
+                                       @endforeach
+                                </td>
+                            @endforeach
+                            
+                        </tr>
+                    @endforeach
+                </table>
+                
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-default pull-left" data-dismiss="modal">Tutup</button>
+            </div>
+        </div>
+    </div>
+</div>
 <div class="modal fade" id="modal-default" style="display: none;">
     <div class="modal-dialog" style="margin-top: 0%;width:90%">
         <div class="modal-content" style="display: flow-root;">
@@ -174,10 +208,7 @@
                                     @endforeach
                             </select>
                         </div>
-                        <div class="form-group" style="margin-bottom: 0px;">
-                            <label>Indikator</label>
-                            <textarea name="indikator" class="form-control" placeholde="Enter.................." rows="3"></textarea>
-                        </div>
+                        
                     </div>
                     <div class="col-sm-6">
                         
@@ -190,24 +221,22 @@
                                     @endforeach
                             </select>
                         </div>
+                        
+                        <div class="form-group" style="margin-bottom: 0px;">
+                            <label>Dampak </label><br>
+                            <span class="btn btn-primary btn-sm" onclick="dampaknya()"><i class="fa fa-search"> Dampak</i></span>
+                            <br><br><textarea disabled id="nama_kriteria" class="form-control" rows="3"></textarea>
+                            <input type="hidden" name="kriteria_id" id="kriteria_id" class="form-control" >
+                            <input type="hidden" name="kategori_id" id="kategori_id" class="form-control" >
+                            <input type="hidden" name="dampak_id" id="dampak_id" class="form-control" >
+                        </div>
+                        <div class="form-group" style="margin-bottom: 0px;">
+                            <label>Indikator</label>
+                            <textarea name="indikator" class="form-control" placeholde="Enter.................." rows="3"></textarea>
+                        </div>
                         <div class="form-group" style="margin-bottom: 0px;">
                             <label>Nilai Ambang</label>
                             <input type="text" name="nilai_ambang" class="form-control" >
-                        </div>
-                        <div class="form-group" style="margin-bottom: 0px;">
-                            <label>Dampak </label>
-                            <select name="dampak_id"  id="dampak_id" onchange="cek_dampak(this.value)" class="form-control" placeholder="Search">
-                                    <option value="">Pilih Dampak</option>
-                                    @foreach(dampak() as $dampak)
-                                        <option value="{{$dampak['id']}}"  >[{{$dampak['id']}}] {{$dampak['name']}}</option>
-                                    @endforeach
-                            </select>
-                            
-                        </div>
-                        <div class="form-group" style="margin-bottom: 0px;">
-                            <label>Kategori </label>
-                            <div id="tampildampak">
-                            </div>
                         </div>
                         
                        
@@ -419,6 +448,18 @@
             
         }
 
+        function pilihdampak(nama_kriteria,kriteria_id,kategori_id,dampak_id){
+            $('#modaldampak').modal('hide');
+            $('#nama_kriteria').val(nama_kriteria);
+            $('#kriteria_id').val(kriteria_id);
+            $('#kategori_id').val(kategori_id);
+            $('#dampak_id').val(dampak_id);
+            $('#nama_kriteriad').val(nama_kriteria);
+            $('#kriteria_idd').val(kriteria_id);
+            $('#kategori_idd').val(kategori_id);
+            $('#dampak_idd').val(dampak_id);
+        }
+
         function cari(a){
            
            $.ajax({
@@ -505,6 +546,12 @@
                   
                }
            });
+            
+        }
+        function dampaknya(){
+           
+            $('#modaldampak').modal({backdrop: 'static', keyboard: false});
+              
             
         }
 

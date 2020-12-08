@@ -30,9 +30,7 @@
             <div class="box-header" style="margin-bottom:1%;text-align:center">
 
                 <div class="col-md-3 col-sm-6 col-xs-6">
-                    <div class="info-box">
-                        <span class="info-box-icon bg-aqua"><i class="ion ion-ios-gear-outline" style="margin-top: 20%;"></i></span>
-
+                    <div class="info-box" style="min-height:40px">
                         <div class="info-box-content">
                         <span class="info-box-text">Total KPI  </span>
                         <span class="info-box-number">{{total_kpi_unit($unit_id,periode_aktif()['id'])}}<small> KPI</small></span>
@@ -42,9 +40,7 @@
                     <!-- /.info-box -->
                 </div>
                 <div class="col-md-3 col-sm-6 col-xs-12">
-                    <div class="info-box">
-                        <span class="info-box-icon bg-green"><i class="ion ion-ios-gear-outline" style="margin-top: 20%;"></i></span>
-
+                    <div class="info-box" style="min-height:40px">
                         <div class="info-box-content">
                         <span class="info-box-text">Proses Keypersson</span>
                         <span class="info-box-number">{{total_kpi_unit_proses($unit_id,periode_aktif()['id'])}}<small> KPI</small></span>
@@ -54,9 +50,7 @@
                     <!-- /.info-box -->
                 </div>
                 <div class="col-md-3 col-sm-6 col-xs-12">
-                    <div class="info-box">
-                        <span class="info-box-icon bg-red"><i class="ion ion-ios-gear-outline" style="margin-top: 20%;"></i></span>
-
+                    <div class="info-box" style="min-height:40px">
                         <div class="info-box-content">
                         <span class="info-box-text">Proses Verifikatur</span>
                         <span class="info-box-number">{{(total_kpi_unit_verifikatur($unit_id,periode_aktif()['id']))}}<small> KPI</small></span>
@@ -66,9 +60,7 @@
                     <!-- /.info-box -->
                 </div>
                 <div class="col-md-3 col-sm-6 col-xs-12">
-                    <div class="info-box">
-                        <span class="info-box-icon bg-yellow"><i class="ion ion-ios-gear-outline" style="margin-top: 20%;"></i></span>
-
+                    <div class="info-box" style="min-height:40px">
                         <div class="info-box-content">
                         <span class="info-box-text">Proses Pimpinan Unit</span>
                         <span class="info-box-number">{{(total_kpi_unit_pimpinan($unit_id,periode_aktif()['id']))}}<small> KPI</small></span>

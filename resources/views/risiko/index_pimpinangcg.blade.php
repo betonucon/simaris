@@ -35,7 +35,7 @@
 
                         <div class="info-box-content">
                         <span class="info-box-text">Total KPI  </span>
-                        <span class="info-box-number"><p id="labelnya"></p><small> KPI</small></span>
+                        <span class="info-box-number"><p id="labelnya" style="display:inline"></p> KPI</span>
                         </div>
                         <!-- /.info-box-content -->
                     </div>
@@ -47,7 +47,7 @@
 
                         <div class="info-box-content">
                         <span class="info-box-text">Sudah diproses</span>
-                        <span class="info-box-number"><p id="labelnya2"></p><small> KPI</small></span>
+                        <span class="info-box-number"><p id="labelnya2" style="display:inline"></p> KPI</span>
                         </div>
                         <!-- /.info-box-content -->
                     </div>
@@ -59,7 +59,7 @@
 
                         <div class="info-box-content">
                         <span class="info-box-text">Belum diproses</span>
-                        <span class="info-box-number"><p id="labelnya3"></p><small> KPI</small></span>
+                        <span class="info-box-number"><p id="labelnya3" style="display:inline"></p> KPI</span>
                         </div>
                         <!-- /.info-box-content -->
                     </div>
