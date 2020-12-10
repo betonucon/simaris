@@ -469,10 +469,7 @@
                     },
                     success: function(msg){
                         if(msg=='ok'){
-                            $('#modal-default').modal('hide');
-                            $('#modalloading').modal('hide');
-                            $("#tampilkan").load("{{url('kpi/view_data_user?unit='.$unit_id.'&periode='.$periode)}}");
-                               
+                           location.reload();
                         }else{
                             $('#modalloading').modal('hide');
                             $('#simpan_data').show();
