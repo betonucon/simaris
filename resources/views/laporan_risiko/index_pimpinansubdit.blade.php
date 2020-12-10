@@ -133,7 +133,7 @@
 
         function cetak(a){
             var periode=$('#periode').val();
-            window.location.assign("{{url('excel_laporan_risiko_subdit')}}?unit="+a+"&periode="+periode);
+            window.open("{{url('excel_laporan_risiko_subdit')}}?unit="+a+"&periode="+periode, 'download');
             
         }
 

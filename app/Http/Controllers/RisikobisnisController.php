@@ -663,7 +663,7 @@ class RisikobisnisController extends Controller
                             <td class="ttd">'.$o->peluang['kriteria'].'</td>
                             
                             <td class="ttd">'.$o->kriteria['name'].'</td>
-                            <td class="ttd"><span class="label label-'.matrik($o['peluang_id'],$o['dampak_id'])['warna'].'">'.matrik($o['peluang_id'],$o['dampak_id'])['tingkat'].'</span></td>
+                            <td class="ttd" style="text-align:center"><span class="label label-'.matrik($o['peluang_id'],$o['dampak_id'])['warna'].'">'.matrik($o['peluang_id'],$o['dampak_id'])['tingkat'].'</span> <br><br>('.$o['peluang_id'].' X '.$o['dampak_id'].')</td>
                             <td class="ttd">'.$o['indikator'].'</td>
                             <td class="ttd">'.$o['nilai_ambang'].' </td>
                             <td class="ttd">';
@@ -761,7 +761,7 @@ class RisikobisnisController extends Controller
                             
                            
                             <td class="ttd">'.$o->kriteria['name'].'</td>
-                            <td class="ttd"><span class="label label-'.matrik($o['peluang_id'],$o['dampak_id'])['warna'].'">'.matrik($o['peluang_id'],$o['dampak_id'])['tingkat'].'</span></td>
+                            <td class="ttd" style="text-align:center"><span class="label label-'.matrik($o['peluang_id'],$o['dampak_id'])['warna'].'">'.matrik($o['peluang_id'],$o['dampak_id'])['tingkat'].'</span> <br><br>('.$o['peluang_id'].' X '.$o['dampak_id'].')</td>
                             <td class="ttd">'.$o['indikator'].'</td>
                             <td class="ttd">'.$o['nilai_ambang'].'</td>
                             <td class="ttd">';
@@ -831,7 +831,7 @@ class RisikobisnisController extends Controller
                             <td class="ttd">'.$o->kelompok['name'].'</td>
                             <td class="ttd">'.$o->peluang['kriteria'].'</td>
                             <td class="ttd">'.$o->kriteria['name'].'</td>
-                            <td class="ttd"><span class="label label-'.matrik($o['peluang_id'],$o['dampak_id'])['warna'].'">'.matrik($o['peluang_id'],$o['dampak_id'])['tingkat'].'</span></td>
+                            <td class="ttd" style="text-align:center"><span class="label label-'.matrik($o['peluang_id'],$o['dampak_id'])['warna'].'">'.matrik($o['peluang_id'],$o['dampak_id'])['tingkat'].'</span> <br><br>('.$o['peluang_id'].' X '.$o['dampak_id'].')</td>
                             <td class="ttd">'.$o['indikator'].'</td>
                             <td class="ttd">'.$o['nilai_ambang'].'</td>
                             <td class="ttd">';
@@ -906,7 +906,7 @@ class RisikobisnisController extends Controller
                             <td class="ttd">'.$o->kelompok['name'].'</td>
                             <td class="ttd">'.$o->peluang['kriteria'].'</td>
                             <td class="ttd">'.$o->kriteria['name'].'</td>
-                            <td class="ttd"><span class="label label-'.matrik($o['peluang_id'],$o['dampak_id'])['warna'].'">'.matrik($o['peluang_id'],$o['dampak_id'])['tingkat'].'</span></td>
+                            <td class="ttd" style="text-align:center"><span class="label label-'.matrik($o['peluang_id'],$o['dampak_id'])['warna'].'">'.matrik($o['peluang_id'],$o['dampak_id'])['tingkat'].'</span> <br><br>('.$o['peluang_id'].' X '.$o['dampak_id'].')</td>
                             <td class="ttd">'.$o['indikator'].'</td>
                             <td class="ttd">'.$o['nilai_ambang'].'</td>
                             <td class="ttd">';
