@@ -122,40 +122,29 @@
         </div>
     </div>
 </div>
-<div class="modal fade" id="modaldampak" style="display: none;z-index: 2000;">
+
+<div class="modal fade" id="modaleditsumber" style="display: none;z-index: 2000;background: rgb(0 0 0 / 88%);">
     <div class="modal-dialog" style="margin-top: 1%;width:80%">
         <div class="modal-content">
             <div class="modal-body">
-                <table width="100%">
-                    <tr>
-                        <th>No</th>
-                        <th>DAMPAK</th>
-                        @foreach(kategori() as $kategori)
-                            <th style="text-transform:uppercase;padding:5px">{{$kategori['name']}}</th>
-                        @endforeach
+                <div style="width:100%;display: flow-root;">
+                    <div id="notifikasiubahsumber"></div>
+                    <form method="post" id="myubah_datasumber" enctype="multipart/form-data">
+                        @csrf
                         
-                    </tr>
-                    @foreach(dampak() as $da=>$dampak)
-                        <tr>
-                            <td style="padding:5px;vertical-align:top">{{$da+1}}</td>
-                            <td style="padding:5px;vertical-align:top">{{$dampak['name']}}</td>
-                            @foreach(kategori() as $kategori)
-                                <td style="padding:5px;vertical-align:top;font-size:11px">
-                                       @foreach(kriteria($dampak['id'],$kategori['id']) as $ket=>$kriteria) 
-                                            @if($ket==1) <hr> @endif
-                                            <a href="#" onclick="pilihdampak('{{$kriteria['name']}}','{{$kriteria['id']}}','{{$kategori['id']}}','{{$dampak['id']}}')">{{$kriteria['name']}}</a>
-                                       @endforeach
-                                </td>
-                            @endforeach
+                        <div id="tampilkanubahsumber"></div>
+                        
                             
-                        </tr>
-                    @endforeach
-                </table>
+                        
+                    </form>
+                    <div class="col-sm-12" style="margin-top:2%">
+                        <button type="button" class="btn btn-default pull-left" data-dismiss="modal">Batal</button>
+                        <button type="button" class="btn btn-primary" style="margin-left:1%" onclick="ubah_data_sumber()">Ubah Data</button>
+                     </div>
+                </div>
                 
             </div>
-            <div class="modal-footer">
-                <button type="button" class="btn btn-default pull-left" data-dismiss="modal">Tutup</button>
-            </div>
+            
         </div>
     </div>
 </div>
@@ -214,7 +203,7 @@
                         
                         <div class="form-group" style="margin-bottom: 0px;">
                             <label>Peluang </label>
-                            <select name="peluang_id"  id="klasifikasi_id" class="form-control" placeholder="Search">
+                            <select name="peluang_id"  id="peluang_idnya" class="form-control" placeholder="Search">
                                     <option value="">Pilih Peluang</option>
                                     @foreach(peluang() as $peluang)
                                         <option value="{{$peluang['id']}}"  >[{{$peluang['name']}}] {{$peluang['kriteria']}}</option>
@@ -225,7 +214,10 @@
                         <div class="form-group" style="margin-bottom: 0px;">
                             <label>Dampak </label><br>
                             <span class="btn btn-primary btn-sm" onclick="dampaknya()"><i class="fa fa-search"> Dampak</i></span>
+                            
                             <br><br><textarea disabled id="nama_kriteria" class="form-control" rows="3"></textarea>
+                            <br>
+                            <div id="warna" style="display: flex;"></div>
                             <input type="hidden" name="kriteria_id" id="kriteria_id" class="form-control" >
                             <input type="hidden" name="kategori_id" id="kategori_id" class="form-control" >
                             <input type="hidden" name="dampak_id" id="dampak_id" class="form-control" >
@@ -398,6 +390,21 @@
         </div>
     </div>
 </div>
+
+
+<div class="modal fade" id="modaldampak" style="display: none;z-index: 2000;background: rgb(0 0 0 / 88%);">
+    <div class="modal-dialog" style="margin-top: 1%;width:80%">
+        <div class="modal-content">
+            <div class="modal-body">
+                <div id="view_dampak_new"></id>
+                
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-default pull-left" data-dismiss="modal">Tutup</button>
+            </div>
+        </div>
+    </div>
+</div>
 @endsection
 
 
@@ -448,7 +455,24 @@
             
         }
 
-        function pilihdampak(nama_kriteria,kriteria_id,kategori_id,dampak_id){
+        function view_dampak_new(){
+           var peluang=$('#peluang_id').val();
+           $.ajax({
+               type: 'GET',
+               url: "{{url('risiko/view_dampak_new')}}?peluang="+peluang,
+               data: "id=id",
+               success: function(msg){
+                   $('#modaldampaknya').modal({backdrop: 'static', keyboard: false});
+                   $("#tampilkanulasan").html(msg);
+                   
+                  
+               }
+           });
+            
+        }
+
+        function pilihdampak(nama_kriteria,kriteria_id,kategori_id,dampak_id,warna,tingkat){
+            
             $('#modaldampak').modal('hide');
             $('#nama_kriteria').val(nama_kriteria);
             $('#kriteria_id').val(kriteria_id);
@@ -458,6 +482,8 @@
             $('#kriteria_idd').val(kriteria_id);
             $('#kategori_idd').val(kategori_id);
             $('#dampak_idd').val(dampak_id);
+            $('#warna').html('<span class="btn btn-'+warna+' btn-sm">'+tingkat+'</span>');
+            $('#warnaedit').html('<span class="btn btn-'+warna+' btn-sm">'+tingkat+'</span>');
         }
 
         function cari(a){
@@ -492,6 +518,7 @@
            });
             
         }
+
         function cek_dampak(a){
            
            $.ajax({
@@ -500,6 +527,21 @@
                data: "id=id",
                success: function(msg){
                    $("#tampildampak").html(msg);
+                  
+               }
+           });
+            
+        }
+
+        function edit_sumber(id,no){
+           
+           $.ajax({
+               type: 'GET',
+               url: "{{url('risiko/edit_sumber')}}/"+id+"?no="+no,
+               data: "id=id",
+               success: function(msg){
+                   $("#modaleditsumber").modal({backdrop: 'static', keyboard: false});
+                   $("#tampilkanubahsumber").html(msg);
                   
                }
            });
@@ -550,8 +592,42 @@
         }
         function dampaknya(){
            
-            $('#modaldampak').modal({backdrop: 'static', keyboard: false});
-              
+            var peluang=$('#peluang_idnya').val();
+            if(peluang==''){
+                alert('Pilih peluang terlebih dahulu')
+            }else{
+                $.ajax({
+                    type: 'GET',
+                    url: "{{url('risiko/view_dampak_new')}}?peluang="+peluang,
+                    data: "id=id",
+                    success: function(msg){
+                        $('#modaldampak').modal({backdrop: 'static', keyboard: false});
+                        $("#view_dampak_new").html(msg);
+                        
+                        
+                    }
+                });
+            } 
+            
+        }
+        function editdampaknya(){
+           
+            var peluang=$('#peluang_idnyaedit').val();
+            if(peluang==''){
+                alert('Pilih peluang terlebih dahulu')
+            }else{
+                $.ajax({
+                    type: 'GET',
+                    url: "{{url('risiko/view_dampak_new')}}?peluang="+peluang,
+                    data: "id=id",
+                    success: function(msg){
+                        $('#modaldampak').modal({backdrop: 'static', keyboard: false});
+                        $("#view_dampak_new").html(msg);
+                        
+                        
+                    }
+                });
+            } 
             
         }
 
@@ -772,6 +848,43 @@
                             });
                         }else{
                             $('#notifikasiubah').html(msg);
+                        }
+                        
+                        
+                    }
+                });
+
+        } 
+
+        function ubah_data_sumber(){
+            var form=document.getElementById('myubah_datasumber');
+                
+                $.ajax({
+                    type: 'POST',
+                    url: "{{url('/risiko/ubah_data_sumber')}}",
+                    data: new FormData(form),
+                    contentType: false,
+                    cache: false,
+                    processData:false,
+                    success: function(msg){
+                        data=msg.split('||');
+                        if(data[0]=='ok'){
+                            $('#modaleditsumber').modal('hide');
+                            $('#notifikasiubahsumber').html('');
+                            $.ajax({
+                                type: 'GET',
+                                url: "{{url('risiko/sumber')}}/"+data[1],
+                                data: "id=id",
+                                success: function(det){
+                                    has=det.split('||');
+                                    $("#tampilkanubah").html(has[0]);
+                                    $("#tampilkanubah_data").html(has[1]);
+                                    $('#notifikasiubah').html('');
+                                    
+                                }
+                            });
+                        }else{
+                            $('#notifikasiubahsumber').html(msg);
                         }
                         
                         

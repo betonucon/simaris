@@ -72,9 +72,11 @@ Route::group(['middleware'    => 'auth'],function(){
     Route::get('risiko/verifikatur', 'RisikobisnisController@index_verifikatur');
     Route::get('risiko/cari_unit', 'RisikobisnisController@cari_unit');
     Route::get('risiko/view_dampak', 'RisikobisnisController@view_dampak');
+    Route::get('risiko/view_dampak_new', 'RisikobisnisController@view_dampak_new');
     Route::get('risiko/view_dampak_edit', 'RisikobisnisController@view_dampak_edit');
     Route::get('risiko/cetak/{id}', 'RisikobisnisController@cetak');
     Route::get('risiko/ubah/{id}', 'RisikobisnisController@ubah');
+    Route::get('risiko/edit_sumber/{id}', 'RisikobisnisController@edit_sumber');
     Route::get('risiko/ulasan/{id}', 'RisikobisnisController@ulasan');
     Route::get('risiko/ubah_sts/{id}', 'RisikobisnisController@ubah_sts');
     Route::get('risiko/sumber/{id}', 'RisikobisnisController@sumber');
@@ -94,6 +96,7 @@ Route::group(['middleware'    => 'auth'],function(){
     Route::post('risiko/ubah_kelompok', 'RisikobisnisController@ubah_kelompok');
     Route::post('risiko/ubah_validasi', 'RisikobisnisController@ubah_validasi');
     Route::post('risiko/import', 'RisikobisnisController@import_data');
+    Route::post('risiko/ubah_data_sumber', 'RisikobisnisController@ubah_data_sumber');
 
 });
 

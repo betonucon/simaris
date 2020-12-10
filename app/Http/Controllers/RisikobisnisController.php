@@ -157,7 +157,7 @@ class RisikobisnisController extends Controller
                     </div>
                     <div class="form-group" style="margin-bottom: 0px;">
                         <label>Peluang </label>
-                        <select name="peluang_id"  id="klasifikasi_id" class="form-control" placeholder="Search">
+                        <select name="peluang_id"  id="peluang_idnyaedit" class="form-control" placeholder="Search">
                                 <option value="">Pilih Peluang</option>';
                                 foreach(peluang() as $peluang){
                                     if($data['peluang_id']==$peluang['id']){$cekdam='selected';}else{$cekdam='';}
@@ -172,8 +172,12 @@ class RisikobisnisController extends Controller
                     
                     <div class="form-group" style="margin-bottom: 0px;">
                         <label>Dampak </label><br>
-                        <span class="btn btn-primary btn-sm" onclick="dampaknya()"><i class="fa fa-search"> Dampak</i></span>
+                        <span class="btn btn-primary btn-sm" onclick="editdampaknya()"><i class="fa fa-search"> Dampak</i></span>
                         <br><br><textarea disabled id="nama_kriteriad" class="form-control" rows="3">'.cek_kriteria($data['kriteria_id'])['name'].'</textarea>
+                        <br>
+                        <div id="warnaedit" style="display: flex;">
+                            <span class="btn btn-'.matrik($data['peluang_id'],$data['dampak_id'])['warna'].' btn-sm">'.matrik($data['peluang_id'],$data['dampak_id'])['tingkat'].'</span>
+                        </div>
                         <input type="hidden" name="kriteria_id" id="kriteria_idd" class="form-control" value="'.$data['kriteria_id'].'" >
                         <input type="hidden" name="kategori_id" id="kategori_idd" class="form-control" value="'.$data['kategori_id'].'" >
                         <input type="hidden" name="dampak_id" id="dampak_idd" class="form-control" value="'.$data['dampak_id'].'" >
@@ -284,7 +288,7 @@ class RisikobisnisController extends Controller
                         <th width="10%">enddate</th>
                         <th width="10%">PIC</th>
                         <th width="8%">Status</th>
-                        <th width="4%"></th>
+                        <th width="7%"></th>
                     </tr>';
 
                     foreach($sumber as $sum){
@@ -298,7 +302,10 @@ class RisikobisnisController extends Controller
                             <td>'.$sum['end_date'].'</td>
                             <td>'.$sum['pic'].'</td>
                             <td>'.$sum['status'].'</td>
-                            <td><span class="btn btn-danger btn-sm" onclick="hapus_sumber('.$sum['id'].','.$sum['risikobisnis_id'].')"><i class="fa fa-remove"></i></span></td>
+                            <td>
+                                <span class="btn btn-danger btn-xs" onclick="hapus_sumber('.$sum['id'].','.$sum['risikobisnis_id'].')"><i class="fa fa-remove"></i></span>_
+                                <span class="btn btn-success btn-xs" onclick="edit_sumber('.$sum['id'].','.$sum['risikobisnis_id'].')"><i class="fa fa-pencil"></i></span>
+                            </td>
                         </tr>';
                     }
                     echo'
@@ -324,10 +331,85 @@ class RisikobisnisController extends Controller
         
     }
 
+    public function edit_sumber(request $request,$id){
+        
+        $data=Sumber::where('id',$id)->first();
+        echo'
+        <style>
+            th{text-align:center;padding:3px;}
+            td{padding:4px;vertical-align:top;}
+            .form-control{font-size:12px;padding-left:5px;height: 27px;}
+        </style>
+            <input type="hidden" name="id" value="'.$data['id'].'" class="form-control">
+            <input type="hidden" name="risikobisnis_id" value="'.$request->no.'" class="form-control">
+            <div class="col-sm-6">
+                <div class="form-group" style="margin-bottom: 0px;">
+                    <label>Sumber</label>
+                    <textarea name="sumber" class="form-control" placeholde="Enter.................." rows="2">'.$data['sumber'].'</textarea>
+                </div>
+                <div class="form-group" style="margin-bottom: 0px;">
+                    <label>Mitigasi</label>
+                    <textarea name="mitigasi" class="form-control" placeholde="Enter.................." rows="2">'.$data['mitigasi'].'</textarea>
+                </div>
+                <div class="col-sm-6" style="margin:0px;padding: 0px;">
+                    <div class="form-group" style="margin-bottom: 0px;">
+                        <label>Biaya</label>
+                        <input type="text" name="biaya" value="'.$data['biaya'].'" class="form-control" >
+                    </div>
+                </div>
+                <div class="col-sm-6" style="margin:0px;padding-left: 2px;">
+                    <div class="form-group" style="margin-bottom: 0px;">
+                        <label>File</label>
+                        <input type="file" name="file" class="form-control" >
+                    </div>
+                </div>
+            </div>
+            <div class="col-sm-6">
+                <div class="form-group" style="margin-bottom: 0px;">
+                    <label>PIC</label>
+                    <textarea name="pic" class="form-control" placeholde="Enter.................." rows="2">'.$data['pic'].'</textarea>
+                </div>
+                <div class="form-group" style="margin-bottom: 0px;">
+                    <label>Status</label>
+                    <textarea name="status" class="form-control" placeholde="Enter.................." rows="2">'.$data['status'].'</textarea>
+                </div>
+                <div class="col-sm-6" style="margin:0px;padding: 0px;">
+                    <div class="form-group" style="margin-bottom: 0px;">
+                        <label>Start_date</label>
+                        <input type="text" name="start_date" id="datetanggal21" value="'.$data['start_date'].'" class="form-control" >
+                    </div>
+                </div>
+                <div class="col-sm-6" style="margin:0px;padding-left: 2px;">
+                    <div class="form-group" style="margin-bottom: 0px;">
+                        <label>End_date</label>
+                        <input type="text" name="end_date" id="datetanggal22" value="'.$data['end_date'].'" class="form-control" >
+                    </div>
+                </div>
+                
+                
+            </div> 
+        ';
+        echo'
+        <script>
+            $(`#datetanggal21`).datepicker({
+                format:"yyyy-mm-dd",
+                autoclose: true
+            })
+            $(`#datetanggal22`).datepicker({
+                format:"yyyy-mm-dd",
+                autoclose: true
+            })
+        </script>
+
+    ';
+        
+        
+    }
+
     public function sumber_verifikatur($id){
         
         $data=Risikobisnis::where('id',$id)->first();
-        $ceksumber=Sumber::where('risikobisnis_id',$id)->count();
+        $ceksumber=Sumber::where('risikobisnis_id',$id)->get();
         echo'
         <style>
             th{text-align:center;}
@@ -337,7 +419,7 @@ class RisikobisnisController extends Controller
         <input type="hidden" name="id" value="'.$data['id'].'" class="form-control">
             <table width="100%" border="1">
                 <tr>
-                    <th >Sumber risiko</th>
+                    <th >Sumber risiko '.$id.'</th>
                     <th width="16%">Mitigasi</th>
                     <th width="16%">Biaya</th>
                     <th width="16%">Waktu</th>
@@ -346,23 +428,23 @@ class RisikobisnisController extends Controller
                 </tr>
         ';
 
-        for($x=1;$x<=$ceksumber;$x++){
-            if($x%2==0){$warna='#f5f5f5';}else{$warna='#fff';}
+        foreach($ceksumber as $x=>$sumber){
+            if(($x+1)%2==0){$warna='#f5f5f5';}else{$warna='#fff';}
 
             echo'
             <tr bgcolor="'.$warna.'">
-                <td>'.cek_sumber($data['id'],$x)['sumber'].'</td>
-                <td>'.cek_sumber($data['id'],$x)['mitigasi'].'</td>
-                <td>'.cek_sumber($data['id'],$x)['biaya'].'  </td>
+                <td>'.$sumber['sumber'].'</td>
+                <td>'.$sumber['mitigasi'].'</td>
+                <td>'.$sumber['biaya'].'  </td>
                 <td>
                     <label>Startdate</label><br>
-                    '.cek_sumber($data['id'],$x)['start_date'].'<br>
+                    '.$sumber['start_date'].'<br>
                     <label>Enddate</label></br>
-                    '.cek_sumber($data['id'],$x)['end_date'].'
+                    '.$sumber['end_date'].'
 
                 </td>
-                <td>'.cek_sumber($data['id'],$x)['pic'].'</td>
-                <td>'.cek_sumber($data['id'],$x)['status'].'</td>
+                <td>'.$sumber['pic'].'</td>
+                <td>'.$sumber['status'].'</td>
                
             </tr>
             <tr>
@@ -370,19 +452,7 @@ class RisikobisnisController extends Controller
             </tr>
 
             ';
-            echo'
-                <script>
-                    $(`#datetanggal1'.$x.'`).datepicker({
-                        format:"yyyy-mm-dd",
-                        autoclose: true
-                    })
-                    $(`#datetanggal2'.$x.'`).datepicker({
-                        format:"yyyy-mm-dd",
-                        autoclose: true
-                    })
-                </script>
-
-            ';
+            
         }
             
         
@@ -439,6 +509,39 @@ class RisikobisnisController extends Controller
        
     }
 
+    public function view_dampak_new(request $request){
+        echo'
+            <table width="100%">
+                <tr>
+                    <th>No</th>
+                    <th>DAMPAK</th>';
+                    foreach(kategori() as $kategori){
+                        echo'<th style="text-transform:uppercase;padding:5px">'.$kategori['name'].'</th>';
+                    }
+                echo'  
+                </tr>';
+                foreach(dampak() as $da=>$dampak){
+                    echo'
+                    <tr>
+                        <td style="padding:5px;vertical-align:top">'.($da+1).'</td>
+                        <td style="padding:5px;vertical-align:top">'.$dampak['name'].'</td>';
+                        foreach(kategori() as $kategori){
+                            echo'
+                            <td style="padding:5px;vertical-align:top;font-size:11px">';
+                                foreach(kriteria($dampak['id'],$kategori['id']) as $ket=>$kriteria){
+                                        if($ket==1){echo'<hr>';}
+                                        echo'<a href="#" onclick="pilihdampak(`'.$kriteria['name'].'`,`'.$kriteria['id'].'`,`'.$kategori['id'].'`,`'.$dampak['id'].'`,`'.matrik($request->peluang,$dampak['id'])['warna'].'`,`'.matrik($request->peluang,$dampak['id'])['tingkat'].'`)">'.$kriteria['name'].'</a>';
+                                }
+                            echo'
+                            </td>';
+                        }
+                    echo'
+                        
+                    </tr>';
+                }
+            echo'
+            </table>';
+    }
     public function view_dampak(request $request){
         $data=Dampak::where('id',$request->dampak)->orderBy('level','Asc')->first();
         $kat=Kategori::orderBy('id','Asc')->get();
@@ -1049,42 +1152,128 @@ class RisikobisnisController extends Controller
             if (trim($request->sumber) == '') {$error[] = '- Isi Sumber terlebih dahulu';}
             if (trim($request->mitigasi) == '') {$error[] = '- Isi Mitigasi terlebih dahulu';}
             if (trim($request->biaya) == '') {$error[] = '- Isi Peluang terlebih dahulu';}
-            if (trim($request->file) == '') {$error[] = '- Upload File terlebih dahulu';}
             if (trim($request->start_date) == '') {$error[] = '- Isi Startdate terlebih dahulu';}
             if (trim($request->end_date) == '') {$error[] = '- Isi Enddate terlebih dahulu';}
             if (trim($request->pic) == '') {$error[] = '- Isi PIC terlebih dahulu';}
             if (trim($request->status) == '') {$error[] = '- Isi Status terlebih dahulu';}
             if (isset($error)) {echo '<div style="padding:5px;background:#d1ffae;font-size:12px;width:100%;padding:1%"><b>Error</b>: <br> '.implode(' || ', $error).'</div>';} 
             else{
+                if($request->file!=''){
+                        $file=$_FILES['file']['name'];
+                        $size=$_FILES['file']['size'];
+                        $asli=$_FILES['file']['tmp_name'];
+                        $ukuran=getimagesize($_FILES["file"]['tmp_name']);
+                        $tipe=explode('.',$_FILES['file']['name']);
+                        $filename=date('Ymdhis').'.'.$tipe[1];
+                        $lokasi='_file/';
+                        if(move_uploaded_file($asli, $lokasi.$filename)){
+                            $data                 = new Sumber;
+                            $data->risikobisnis_id         = $request->id;
+                            $data->sumber         = $request->sumber;
+                            $data->mitigasi       = $request->mitigasi;
+                            $data->biaya          = $request->biaya;
+                            $data->start_date     = $request->start_date;
+                            $data->end_date       = $request->end_date;
+                            $data->file            = $filename;
+                            $data->pic            = $request->pic;
+                            $data->status          = $request->status;
+                            $data->save();
+        
+                            $cekalasan      = Alasan::where('risikobisnis_id',$request->id)->count();
+                            if($cekalasan>0){
+                                $alasan      = Alasan::where('risikobisnis_id',$request->id)->first();
+                                $alasan->sts = 1;
+                                $alasan->save();
+                            }
+                            echo'ok||'.$request->id;
+                        }
+    
+                }else{
+                        $data                 = new Sumber;
+                        $data->risikobisnis_id         = $request->id;
+                        $data->sumber         = $request->sumber;
+                        $data->mitigasi       = $request->mitigasi;
+                        $data->biaya          = $request->biaya;
+                        $data->start_date     = $request->start_date;
+                        $data->end_date       = $request->end_date;
+                        $data->pic            = $request->pic;
+                        $data->status          = $request->status;
+                        $data->save();
 
-                $file=$_FILES['file']['name'];
-                $size=$_FILES['file']['size'];
-                $asli=$_FILES['file']['tmp_name'];
-                $ukuran=getimagesize($_FILES["file"]['tmp_name']);
-                $tipe=explode('.',$_FILES['file']['name']);
-                $filename=date('Ymdhis').'.'.$tipe[1];
-                $lokasi='_file/';
-                if(move_uploaded_file($asli, $lokasi.$filename)){
-                    $data                 = new Sumber;
-                    $data->risikobisnis_id         = $request->id;
-                    $data->sumber         = $request->sumber;
-                    $data->mitigasi       = $request->mitigasi;
-                    $data->biaya          = $request->biaya;
-                    $data->start_date     = $request->start_date;
-                    $data->end_date       = $request->end_date;
-                    $data->file            = $filename;
-                    $data->pic            = $request->pic;
-                    $data->status          = $request->status;
-                    $data->save();
-
-                    $cekalasan      = Alasan::where('risikobisnis_id',$request->id)->count();
-                    if($cekalasan>0){
-                        $alasan      = Alasan::where('risikobisnis_id',$request->id)->first();
-                        $alasan->sts = 1;
-                        $alasan->save();
-                    }
-                    echo'ok||'.$request->id;
+                        $cekalasan      = Alasan::where('risikobisnis_id',$request->id)->count();
+                        if($cekalasan>0){
+                            $alasan      = Alasan::where('risikobisnis_id',$request->id)->first();
+                            $alasan->sts = 1;
+                            $alasan->save();
+                        }
+                        echo'ok||'.$request->id;
                 }
+                
+
+            }
+            
+        
+    }
+    public function ubah_data_sumber(request $request){
+        error_reporting(0);
+        
+            if (trim($request->sumber) == '') {$error[] = '- Isi Sumber terlebih dahulu';}
+            if (trim($request->mitigasi) == '') {$error[] = '- Isi Mitigasi terlebih dahulu';}
+            if (trim($request->biaya) == '') {$error[] = '- Isi Peluang terlebih dahulu';}
+            if (trim($request->start_date) == '') {$error[] = '- Isi Startdate terlebih dahulu';}
+            if (trim($request->end_date) == '') {$error[] = '- Isi Enddate terlebih dahulu';}
+            if (trim($request->pic) == '') {$error[] = '- Isi PIC terlebih dahulu';}
+            if (trim($request->status) == '') {$error[] = '- Isi Status terlebih dahulu';}
+            if (isset($error)) {echo '<div style="padding:5px;background:#d1ffae;font-size:12px;width:100%;padding:1%"><b>Error</b>: <br> '.implode(' || ', $error).'</div>';} 
+            else{
+                if($request->file!=''){
+                    $file=$_FILES['file']['name'];
+                    $size=$_FILES['file']['size'];
+                    $asli=$_FILES['file']['tmp_name'];
+                    $ukuran=getimagesize($_FILES["file"]['tmp_name']);
+                    $tipe=explode('.',$_FILES['file']['name']);
+                    $filename=date('Ymdhis').'.'.$tipe[1];
+                    $lokasi='_file/';
+                    if(move_uploaded_file($asli, $lokasi.$filename)){
+                        $data                 = Sumber::find($request->id);
+                        $data->sumber         = $request->sumber;
+                        $data->mitigasi       = $request->mitigasi;
+                        $data->biaya          = $request->biaya;
+                        $data->start_date     = $request->start_date;
+                        $data->end_date       = $request->end_date;
+                        $data->file            = $filename;
+                        $data->pic            = $request->pic;
+                        $data->status          = $request->status;
+                        $data->save();
+    
+                        $cekalasan      = Alasan::where('risikobisnis_id',$request->risikobisnis_id)->count();
+                        if($cekalasan>0){
+                            $alasan      = Alasan::where('risikobisnis_id',$request->risikobisnis_id)->first();
+                            $alasan->sts = 1;
+                            $alasan->save();
+                        }
+                        echo'ok||'.$request->risikobisnis_id;
+                    }
+                }else{
+                        $data                 = Sumber::find($request->id);
+                        $data->sumber         = $request->sumber;
+                        $data->mitigasi       = $request->mitigasi;
+                        $data->biaya          = $request->biaya;
+                        $data->start_date     = $request->start_date;
+                        $data->end_date       = $request->end_date;
+                        $data->pic            = $request->pic;
+                        $data->status          = $request->status;
+                        $data->save();
+    
+                        $cekalasan      = Alasan::where('risikobisnis_id',$request->risikobisnis_id)->count();
+                        if($cekalasan>0){
+                            $alasan      = Alasan::where('risikobisnis_id',$request->risikobisnis_id)->first();
+                            $alasan->sts = 1;
+                            $alasan->save();
+                        }
+                        echo'ok||'.$request->risikobisnis_id;
+                }
+                
 
 
             }

@@ -148,7 +148,7 @@
                     <select name="sts" class="form-control" onchange="cek_validasi(this.value)">
                         <option value="">Pilih status validasi</option>
                         <option value="3">Setujui</option>
-                        <option value="1">Kembalikan</option>
+                        <option value="0">Kembalikan</option>
                     </select><br>
                     <div id="alasan">
                         <label>Alasan</label>
@@ -325,7 +325,7 @@
             
                 $.ajax({
                     type: 'POST',
-                    url: "{{url('/risiko/ubah_validasi')}}?role_id=2",
+                    url: "{{url('/risiko/ubah_validasi')}}?role_id=1",
                     data: new FormData(form),
                     contentType: false,
                     cache: false,
