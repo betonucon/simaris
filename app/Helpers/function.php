@@ -110,6 +110,10 @@ function periode_aktif(){
    $data=App\Periode::where('sts_aktif',1)->first();
    return $data;
 }
+function periode_berikutnya($tahun){
+   $data=App\Periode::where('urut','>',1)->where('tahun',$tahun)->get();
+   return $data;
+}
 
 function matrik($peluang,$dampak){
    $data=App\Matrik::where('peluang_id',$peluang)->where('dampak_id',$dampak)->first();

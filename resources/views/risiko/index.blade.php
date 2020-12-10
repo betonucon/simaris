@@ -16,83 +16,81 @@
         border:solid 1px #d1d1d6;
         padding:5px;
     }
-    .form-group {
     
-}
 </style>
 @section('content')
 
 <section class="content">
     <div class="row">
         <div class="col-xs-12">
-          <div class="box">
+            <div class="box">
             
-            <div class="box-header" style="margin-bottom:0%;text-align:center">
+                <div class="box-header" style="margin-bottom:0%;text-align:center">
 
-                <div class="col-md-4 col-sm-6 col-xs-6">
-                    <div class="info-box" style="min-height:40px">
-                        
-                        <div class="info-box-content">
-                        <span class="info-box-text">Total KPI  </span>
-                        <span class="info-box-number">{{total_kpi_unit($unit_id,periode_aktif()['id'])}}<small> KPI</small></span>
+                    <div class="col-md-4 col-sm-6 col-xs-6">
+                        <div class="info-box" style="min-height:40px">
+                            
+                            <div class="info-box-content">
+                                <span class="info-box-text">Total KPI  </span>
+                                <span class="info-box-number">{{total_kpi_unit($unit_id,periode_aktif()['id'])}}<small> KPI</small></span>
+                            </div>
+                            <!-- /.info-box-content -->
                         </div>
-                        <!-- /.info-box-content -->
+                        <!-- /.info-box -->
                     </div>
-                    <!-- /.info-box -->
-                </div>
-                <div class="col-md-4 col-sm-6 col-xs-12">
-                    <div class="info-box" style="min-height:40px">
-                        
-                        <div class="info-box-content">
-                        <span class="info-box-text">Sudah diproses</span>
-                        <span class="info-box-number">{{total_kpi_unit_proses($unit_id,periode_aktif()['id'])}}<small> KPI</small></span>
+                    <div class="col-md-4 col-sm-6 col-xs-12">
+                        <div class="info-box" style="min-height:40px">
+                            
+                            <div class="info-box-content">
+                                <span class="info-box-text">Sudah diproses</span>
+                                <span class="info-box-number">{{total_kpi_unit_proses($unit_id,periode_aktif()['id'])}}<small> KPI</small></span>
+                            </div>
+                            <!-- /.info-box-content -->
                         </div>
-                        <!-- /.info-box-content -->
+                        <!-- /.info-box -->
                     </div>
-                    <!-- /.info-box -->
-                </div>
-                <div class="col-md-4 col-sm-6 col-xs-12">
-                    <div class="info-box" style="min-height:40px">
-                        
-                        <div class="info-box-content">
-                        <span class="info-box-text">Belum diproses</span>
-                        <span class="info-box-number">{{(total_kpi_unit($unit_id,periode_aktif()['id'])-total_kpi_unit_proses($unit_id,periode_aktif()['id']))}}<small> KPI</small></span>
+                    <div class="col-md-4 col-sm-6 col-xs-12">
+                        <div class="info-box" style="min-height:40px">
+                            
+                            <div class="info-box-content">
+                                <span class="info-box-text">Belum diproses</span>
+                                <span class="info-box-number">{{(total_kpi_unit($unit_id,periode_aktif()['id'])-total_kpi_unit_proses($unit_id,periode_aktif()['id']))}}<small> KPI</small></span>
+                            </div>
+                            <!-- /.info-box-content -->
                         </div>
-                        <!-- /.info-box-content -->
+                        <!-- /.info-box -->
                     </div>
-                    <!-- /.info-box -->
                 </div>
-            </div>
             
-            <div class="box-header" style="margin-bottom:0%">
-                
-              <h3 class="box-title">
-                <span class="btn btn-success btn-sm" onclick="tambah()"><i class="fa fa-plus"></i> Tambah Baru</span>
-                <!-- <span class="btn btn-primary btn-sm" onclick="importdata()"><i class="fa fa-clone"></i> Import</span> -->
-                </h3>
+                <div class="box-header" style="margin-bottom:0%">
+                    
+                    <h3 class="box-title">
+                    <span class="btn btn-success btn-sm" onclick="tambah()"><i class="fa fa-plus"></i> Tambah Baru</span>
+                    <!-- <span class="btn btn-primary btn-sm" onclick="importdata()"><i class="fa fa-clone"></i> Import</span> -->
+                    </h3>
 
-              <div class="box-tools">
-                <div class="input-group input-group-sm hidden-xs" style="width: 400px;">
-                  <select name="table_search" style="display:inline" id="periode" onchange="cari(this.value)" class="form-control pull-right" placeholder="Search">
-                  <option value="">Pilih Priode</option>
-                            @foreach(periode() as $peri)
-                                <option value="{{$peri['id']}}" @if($periode==$peri['id']) selected @endif >[{{$peri['tahun']}}] {{$peri['name']}}</option>
-                            @endforeach
-                  </select>
-                  <div class="input-group-btn">
-                    <button type="submit" class="btn btn-default" ><i class="fa fa-search"></i></button>
-                  </div>
+                    <div class="box-tools">
+                        <div class="input-group input-group-sm hidden-xs" style="width: 400px;">
+                            <select name="table_search" style="display:inline" id="periode" onchange="cari(this.value)" class="form-control pull-right" placeholder="Search">
+                            <option value="">Pilih Priode</option>
+                                        @foreach(periode() as $peri)
+                                            <option value="{{$peri['id']}}" @if($periode==$peri['id']) selected @endif >[{{$peri['tahun']}}] {{$peri['name']}}</option>
+                                        @endforeach
+                            </select>
+                            <div class="input-group-btn">
+                                <button type="submit" class="btn btn-default" ><i class="fa fa-search"></i></button>
+                            </div>
+                        </div>
+                    </div>
                 </div>
-              </div>
-            </div>
-            <!-- /.box-header -->
-            <div class="box-body table-responsive no-padding" id="tampilkan" style="padding:100px">
-              
+                <!-- /.box-header -->
+                <div class="box-body table-responsive no-padding" id="tampilkan" style="padding:100px">
                 
-             
+                    
+                
+                </div>
+            
             </div>
-            <!-- /.box-body -->
-          </div>
           <!-- /.box -->
         </div>
     </div>
@@ -379,7 +377,7 @@
     </div>
 </div>
 
-<div class="modal modal-fullscreen fade" id="modalloading" >
+<div class="modal modal-fullscreen fade" id="modalloading" style="display: none;" >
     <div class="modal-dialog" style="margin-top: 15%;">
         <div class="modal-content" style="background: transparent;">
             
@@ -396,7 +394,7 @@
     <div class="modal-dialog" style="margin-top: 1%;width:80%">
         <div class="modal-content">
             <div class="modal-body">
-                <div id="view_dampak_new"></id>
+                <div id="view_dampak_new"></div>
                 
             </div>
             <div class="modal-footer">

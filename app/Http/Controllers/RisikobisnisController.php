@@ -5,6 +5,7 @@ use Illuminate\Http\Request;
 use App\Risikobisnis;
 use App\Sumber;
 use App\Alasan;
+use App\Periode;
 use App\Dampak;
 use App\Kategori;
 use App\Kpi;
@@ -818,13 +819,7 @@ class RisikobisnisController extends Controller
                     echo'    
                         <tr bgcolor="'.$warna.'">
                             <td class="ttd">'.($no+1).'</td>
-                            <td class="ttd">
-                                '.$btn.'';
-                                if(jum_alasan($o['id'],2)>0){
-                                    echo'<br><br><span class="btn btn-warning btn-xs" onclick="cek_alasan('.$o['id'].')"><i class="fa fa-comment"></i></span>';
-                                }
-                            echo'
-                            </td>
+                            <td class="ttd">'.$btn.'</td>
                             <td class="ttd">'.$o->kpi['name'].'</td>
                             <td class="ttd">'.$o['risiko'].'</td>
                             <td class="ttd">'.$o['akibat'].'</td>
@@ -1090,13 +1085,63 @@ class RisikobisnisController extends Controller
             
             
             else{
-                $data               =   Risikobisnis::find($request->risikobisnis_id);
-                $data->sts          =   $request->sts;
-                $data->save();
+                if($request->sts==4){
+                    $data               =   Risikobisnis::find($request->risikobisnis_id);
+                    $data->sts          =   $request->sts;
+                    $data->save();
 
-                if($data){
-                    echo'ok|'.$cek['unit_id'];
+                    $cekprio=Periode::where('id',$cek['periode_id'])->first();
+                    $getsumber=Sumber::where('risikobisnis_id',$request->risikobisnis_id)->get();
+                    $next=($cekprio['urut']+1);
+                    $berikutnya=Periode::where('urut',$next)->where('tahun',$cek['tahun'])->first();
+                    
+                        $datamul               =   new Risikobisnis;
+                        $datamul->risiko       =   $cek['risiko'];
+                        $datamul->unit_id      =   $cek['unit_id'];
+                        $datamul->kpi_id       =   $cek['kpi_id'];
+                        $datamul->periode_id   =   $berikutnya['id'];
+                        $datamul->tahun        =   $cek['tahun'];
+                        $datamul->akibat       =   $cek['akibat'];
+                        $datamul->peluang_id   =   $cek['peluang_id'];
+                        $datamul->indikator   =   $cek['indikator'];
+                        $datamul->nilai_ambang   =   $cek['nilai_ambang'];
+                        $datamul->kriteria_id   =   $cek['kriteria_id'];
+                        $datamul->tanggal       =   date('Y-m-d');
+                        $datamul->kategori_id   =   $cek['kategori_id'];
+                        $datamul->sts          =   0;
+                        $datamul->kaidah          =   0;
+                        $datamul->klasifikasi_id    =   $cek['klasifikasi_id'];
+                        $datamul->dampak_id    =   $cek['dampak_id'];
+                        $datamul->creator      =   $cek['creator'];
+                        $datamul->save();
+                    
+
+                        if($datamul){
+                            foreach($getsumber as $smb){
+                                $sumbrr                 = new Sumber;
+                                $sumbrr->risikobisnis_id  = $datamul['id'];
+                                $sumbrr->sumber         = $smb['sumber'];
+                                $sumbrr->mitigasi       = $smb['mitigasi'];
+                                $sumbrr->biaya          = $smb['biaya'];
+                                $sumbrr->start_date     = $smb['start_date'];
+                                $sumbrr->end_date       = $smb['end_date'];
+                                $sumbrr->file            = $smb['file'];
+                                $sumbrr->pic            = $smb['pic'];
+                                $sumbrr->status          = $smb['status'];
+                                $sumbrr->save();
+                            }
+                                
+
+                            echo'ok|'.$cek['unit_id'];
+                        }
+                }else{
+                    $data               =   Risikobisnis::find($request->risikobisnis_id);
+                    $data->sts          =   $request->sts;
+                    $data->save();
+    
+                    
                 }
+                
             }
                
 
