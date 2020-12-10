@@ -120,10 +120,10 @@ class LaporanrisikoController extends Controller
                     <th width="6%">Status</th> 
                 </tr>';
                 if($cek>0){
-                    $data=Risikobisnis::with(['kpi','unit','periode','dampak','peluang','kriteria'])->where('periode_id',$request->periode)->where('sts',4)->orderBy('id','Desc')->get();
+                    $data=Risikobisnis::with(['kpi','unit','periode','dampak','peluang','kriteria'])->where('periode_id',$request->periode)->where('sts','>',2)->orderBy('id','Desc')->get();
                 }else{
                     // $data=Risikobisnis::with(['unit'])->orderBy('id','Desc')->get();
-                    $data=Risikobisnis::with(['kpi','unit','periode','dampak','peluang','kriteria'])->where('unit_id',$request->unit)->where('periode_id',$request->periode)->where('sts',4)->orderBy('id','Desc')->get();
+                    $data=Risikobisnis::with(['kpi','unit','periode','dampak','peluang','kriteria'])->where('unit_id',$request->unit)->where('periode_id',$request->periode)->where('sts','>',2)->orderBy('id','Desc')->get();
                 }
                 // dd($data);
                 foreach($data as $no=>$o){

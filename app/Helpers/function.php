@@ -125,11 +125,11 @@ function total_kpi_unit($unit,$periode){
    return $data;
 }
 function total_risiko($unit,$periode){
-   $data=App\Risikobisnis::where('unit_id',$unit)->where('periode_id',$periode)->where('sts',1)->count();
+   $data=App\Kpi::where('unit_id',$unit)->where('periode_id',$periode)->count();
    return $data;
 }
 function total_risiko_validasi($unit,$periode){
-   $data=App\Risikobisnis::where('unit_id',$unit)->where('periode_id',$periode)->where('sts',2)->count();
+   $data=App\Risikobisnis::where('unit_id',$unit)->where('periode_id',$periode)->where('sts','>',1)->count();
    return $data;
 }
 

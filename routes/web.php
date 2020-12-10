@@ -85,6 +85,7 @@ Route::group(['middleware'    => 'auth'],function(){
     Route::get('risiko/uncek/{id}', 'RisikobisnisController@uncek');
     Route::get('risiko/kirim_email/{id}', 'RisikobisnisController@kirim_email');
     Route::get('risiko/hapus/{id}', 'RisikobisnisController@hapus');
+    Route::get('risiko/hapus_risiko/{id}', 'RisikobisnisController@hapus_risiko');
     Route::get('risiko/view_data', 'RisikobisnisController@view_data');
     Route::get('risiko/view_data_verifikatur', 'RisikobisnisController@view_data_verifikatur');
     Route::get('risiko/view_data_pimpinanunit', 'RisikobisnisController@view_data_pimpinanunit');

@@ -107,6 +107,10 @@ class RisikobisnisController extends Controller
         }
     }
 
+    public function hapus_risiko($id){
+        $data=Risikobisnis::where('id',$id)->delete();
+        echo $id.'ssss';
+    }
     public function hapus_sumber(request $request){
         $data=Sumber::where('id',$request->no)->delete();
         echo $request->id;

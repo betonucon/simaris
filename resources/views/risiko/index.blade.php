@@ -650,17 +650,16 @@
 
         function hapus(a){
             if (confirm('Apakah yakin akan menghapus data ini?')) {
+                
                 $.ajax({
                     type: 'GET',
-                    url: "{{url('kpi/hapus')}}/"+a,
-                    data: "id=id",
+                    url: "{{url('risiko/hapus_risiko')}}/"+a,
+                    data: "id="+a,
                     beforeSend: function(){
                                 $('#modalloading').modal({backdrop: 'static', keyboard: false});
                         },
                     success: function(msg){
-                            $('#modalloading').modal('hide');
-                            $("#tampilkan").load("{{url('kpi/view_data_user?unit='.$unit_id.'&periode='.$periode)}}");
-                        
+                           location.reload();
                     }
                 });
             }
