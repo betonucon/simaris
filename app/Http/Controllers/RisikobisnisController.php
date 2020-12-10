@@ -1094,46 +1094,49 @@ class RisikobisnisController extends Controller
                     $getsumber=Sumber::where('risikobisnis_id',$request->risikobisnis_id)->get();
                     $next=($cekprio['urut']+1);
                     $berikutnya=Periode::where('urut',$next)->where('tahun',$cek['tahun'])->first();
-                    
-                        $datamul               =   new Risikobisnis;
-                        $datamul->risiko       =   $cek['risiko'];
-                        $datamul->unit_id      =   $cek['unit_id'];
-                        $datamul->kpi_id       =   $cek['kpi_id'];
-                        $datamul->periode_id   =   $berikutnya['id'];
-                        $datamul->tahun        =   $cek['tahun'];
-                        $datamul->akibat       =   $cek['akibat'];
-                        $datamul->peluang_id   =   $cek['peluang_id'];
-                        $datamul->indikator   =   $cek['indikator'];
-                        $datamul->nilai_ambang   =   $cek['nilai_ambang'];
-                        $datamul->kriteria_id   =   $cek['kriteria_id'];
-                        $datamul->tanggal       =   date('Y-m-d');
-                        $datamul->kategori_id   =   $cek['kategori_id'];
-                        $datamul->sts          =   0;
-                        $datamul->kaidah          =   0;
-                        $datamul->klasifikasi_id    =   $cek['klasifikasi_id'];
-                        $datamul->dampak_id    =   $cek['dampak_id'];
-                        $datamul->creator      =   $cek['creator'];
-                        $datamul->save();
-                    
+                    if($next==5){
+                        echo'ok|'.$cek['unit_id'];
+                    }else{
+                            $datamul               =   new Risikobisnis;
+                            $datamul->risiko       =   $cek['risiko'];
+                            $datamul->unit_id      =   $cek['unit_id'];
+                            $datamul->kpi_id       =   $cek['kpi_id'];
+                            $datamul->periode_id   =   $berikutnya['id'];
+                            $datamul->tahun        =   $cek['tahun'];
+                            $datamul->akibat       =   $cek['akibat'];
+                            $datamul->peluang_id   =   $cek['peluang_id'];
+                            $datamul->indikator   =   $cek['indikator'];
+                            $datamul->nilai_ambang   =   $cek['nilai_ambang'];
+                            $datamul->kriteria_id   =   $cek['kriteria_id'];
+                            $datamul->tanggal       =   date('Y-m-d');
+                            $datamul->kategori_id   =   $cek['kategori_id'];
+                            $datamul->sts          =   0;
+                            $datamul->kaidah          =   0;
+                            $datamul->klasifikasi_id    =   $cek['klasifikasi_id'];
+                            $datamul->dampak_id    =   $cek['dampak_id'];
+                            $datamul->creator      =   $cek['creator'];
+                            $datamul->save();
+                        
 
-                        if($datamul){
-                            foreach($getsumber as $smb){
-                                $sumbrr                 = new Sumber;
-                                $sumbrr->risikobisnis_id  = $datamul['id'];
-                                $sumbrr->sumber         = $smb['sumber'];
-                                $sumbrr->mitigasi       = $smb['mitigasi'];
-                                $sumbrr->biaya          = $smb['biaya'];
-                                $sumbrr->start_date     = $smb['start_date'];
-                                $sumbrr->end_date       = $smb['end_date'];
-                                $sumbrr->file            = $smb['file'];
-                                $sumbrr->pic            = $smb['pic'];
-                                $sumbrr->status          = $smb['status'];
-                                $sumbrr->save();
+                            if($datamul){
+                                foreach($getsumber as $smb){
+                                    $sumbrr                 = new Sumber;
+                                    $sumbrr->risikobisnis_id  = $datamul['id'];
+                                    $sumbrr->sumber         = $smb['sumber'];
+                                    $sumbrr->mitigasi       = $smb['mitigasi'];
+                                    $sumbrr->biaya          = $smb['biaya'];
+                                    $sumbrr->start_date     = $smb['start_date'];
+                                    $sumbrr->end_date       = $smb['end_date'];
+                                    $sumbrr->file            = $smb['file'];
+                                    $sumbrr->pic            = $smb['pic'];
+                                    $sumbrr->status          = $smb['status'];
+                                    $sumbrr->save();
+                                }
+                                    
+
+                                echo'ok|'.$cek['unit_id'];
                             }
-                                
-
-                            echo'ok|'.$cek['unit_id'];
-                        }
+                    }
                 }else{
                     $data               =   Risikobisnis::find($request->risikobisnis_id);
                     $data->sts          =   $request->sts;
