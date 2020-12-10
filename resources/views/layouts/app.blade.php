@@ -72,9 +72,9 @@
     <!-- Logo -->
     <a href="{{url(url_link().'/index2.html')}}" class="logo">
       <!-- mini logo for sidebar mini 50x50 pixels -->
-      <span class="logo-mini"><b>EB</b></span>
+      <span class="logo-mini"></span>
       <!-- logo for regular state and mobile devices -->
-      <span class="logo-lg"><b>SIMARIS</b></span>
+      <span class="logo-lg"><b>NEWSIMARIS</b></span>
     </a>
     <!-- Header Navbar: style can be found in header.less -->
     <nav class="navbar navbar-static-top">
@@ -100,7 +100,7 @@
                 <img src="{{url(url_link().'/img/akun.png')}}" class="img-circle" alt="User Image">
 
                 <p>
-                  {{Auth::user()['name']}} - {{Auth::user()['kode']}}
+                  {{Auth::user()['name']}} 
                   <small>Member {{bulan(date('m'))}}. {{date('Y')}}</small>
                 </p>
               </li>
@@ -113,9 +113,7 @@
               </li>
               <!-- Menu Footer-->
               <li class="user-footer">
-                <div class="pull-left">
-                  <a href="#" class="btn btn-default btn-flat">Ubah Password</a>
-                </div>
+                
                 <div class="pull-right">
                   <a href="#" class="btn btn-default btn-flat" onclick="event.preventDefault();document.getElementById('logout-form').submit();">Sign out</a>
                   
@@ -190,7 +188,7 @@
     <div class="pull-right hidden-xs">
       <b>Version</b> 1.0.0
     </div>
-    <strong>Copyright &copy; 2020 <a href="{{url('/')}}">SIMARIS</a>.</strong> All rights
+    <strong>Copyright &copy; 2020 <a href="{{url('/')}}">NEWSIMARIS</a>.</strong> All rights
     reserved.
   </footer>
 
